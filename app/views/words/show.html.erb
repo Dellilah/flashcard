@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>In polish:</b>
+  <%= @word.in_polish %>
+</p>
+
+<p>
+  <b>In english:</b>
+  <%= @word.in_english %>
+</p>
+
+
+<%= link_to 'Edit', edit_word_path(@word) %> |
+<%= link_to 'Back', words_path %>

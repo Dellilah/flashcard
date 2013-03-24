@@ -1,4 +1,7 @@
 Flashcard::Application.routes.draw do
+  resources :words
+
+
   root :to => 'Home#index'
 
   resources :users
