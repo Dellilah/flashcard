@@ -13,6 +13,7 @@ end
 
 group :development do
   gem 'annotate', '2.5.0'
+  gem 'pry-rails'
   gem 'awesome_print'
 end
 

@@ -1,15 +1,15 @@
 class Word < ActiveRecord::Base
   attr_accessible :in_english, :in_polish
 
-  def polish_word?
+  def polish?
     in_polish.present? && in_english.blank?
   end
 
-  def english_word?
+  def english?
     in_english.present? && in_polish.blank?
   end
 
   def needs_translation?
-    polish_word? || english_word?
+    polish? || english?
   end
 end

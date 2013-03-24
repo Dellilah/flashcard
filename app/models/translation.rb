@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'open-uri'
 class Translation
   API_KEY = '8b863'
@@ -6,15 +7,23 @@ class Translation
   BASE_EN_PL_URL = "#{BASE_URL}enpl/"
 
   def self.english_translations(word)
-    url = BASE_PL_EN_URL + word
-    response = JSON.parse(open(url).read)
+    url = URI.encode(BASE_PL_EN_URL + word)
+
+    response = nil
+    timeout(2) do
+      response = JSON.parse(open(url).read)
+    end
 
     extract_english_translations_from_response(response)
   end
 
   def self.polish_translations(word)
-    url = BASE_EN_PL_URL + word
-    response = JSON.parse(open(url).read)
+    url = URI.encode(BASE_EN_PL_URL + word)
+
+    response = nil
+    timeout(2) do
+      response = JSON.parse(open(url).read)
+    end
 
     extract_polish_translations_from_response(response)
   end

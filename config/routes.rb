@@ -1,6 +1,8 @@
 Flashcard::Application.routes.draw do
   resources :words
   match 'words/:id/set_translation', to: 'Words#set_translation', :as => :set_translation
+  match 'words/:id/from_pl/set_translation', to: 'Words#set_english_translation', :as => :set_english_translation
+  match 'words/:id/from_en/set_translation', to: 'Words#set_polish_translation', :as => :set_polish_translation
 
 
   root :to => 'Home#index'

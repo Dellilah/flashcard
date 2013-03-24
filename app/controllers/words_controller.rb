@@ -48,7 +48,7 @@ class WordsController < ApplicationController
         redirect_to set_translation_path(@word)
       else
         respond_to do |format|
-          format.html { redirect_to @word, notice: 'context was successfully created.' }
+          format.html { redirect_to @word, notice: 'Word was successfully created.' }
           format.json { render json: @word, status: :created, location: @word }
         end
       end
@@ -68,7 +68,7 @@ class WordsController < ApplicationController
 
     respond_to do |format|
       if @word.update_attributes(params[:word])
-        format.html { redirect_to @word, notice: 'context was successfully updated.' }
+        format.html { redirect_to @word, notice: 'Word was successfully saved.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -90,26 +90,48 @@ class WordsController < ApplicationController
   end
 
   def set_translation
-    @word = Word.find(params[:id])
-    if @word.polish_word?
-      @translation = Translation.english_translations(@word.in_polish).inspect
-    else
-      @translation = Translation.polish_translations(@word.in_english).inspect
+    handle_set_translation('set_translation') do |word|
+      if word.polish?
+        @translations = Translation.english_translations(word.in_polish)
+      else
+        @translations = Translation.polish_translations(word.in_english)
+      end
     end
+  end
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @translation }
+  def set_english_translation
+    handle_set_translation('set_english_translation') do |word|
+      @translations = Translation.english_translations(word.in_polish)
+    end
+  end
+
+  def set_polish_translation
+    handle_set_translation('set_polish_translation') do |word|
+      @translations = Translation.polish_translations(word.in_english)
     end
   end
 
   private
+  def handle_set_translation(action_name, &block)
+    @word = Word.find(params[:id])
+    begin
+      block.call(@word)
+    rescue NoMethodError
+      return redirect_to edit_word_path(@word), :notice => "No translation found, please provide your own"
+    rescue OpenURI::HTTPError, SocketError, TimeoutError
+      return redirect_to @word, :notice => "There was an error with translation service, try again or provide your own translation, using edit"
+    end
+
+    return render action_name
+  end
+
+
   def context
     Word.where(:user_id => current_user.id)
   end
 
   def ensure_logged_in
-    unless signed_in? #signed_in? in SessionsHelper 
+    unless signed_in? #signed_in? in SessionsHelper
       store_location
       redirect_to signin_path, notice: "Please sign in"
     end
