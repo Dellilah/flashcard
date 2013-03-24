@@ -1,5 +1,6 @@
 Flashcard::Application.routes.draw do
   resources :words
+  match 'words/:id/set_translation', to: 'Words#set_translation', :as => :set_translation
 
 
   root :to => 'Home#index'

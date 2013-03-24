@@ -43,11 +43,18 @@ class WordsController < ApplicationController
   def create
     @word = context.new(params[:word])
 
-    respond_to do |format|
-      if @word.save
-        format.html { redirect_to @word, notice: 'context was successfully created.' }
-        format.json { render json: @word, status: :created, location: @word }
+    if @word.save
+      if @word.needs_translation?
+        redirect_to set_translation_path(@word)
       else
+        respond_to do |format|
+          format.html { redirect_to @word, notice: 'context was successfully created.' }
+          format.json { render json: @word, status: :created, location: @word }
+        end
+      end
+
+    else
+      respond_to do |format|
         format.html { render action: "new" }
         format.json { render json: @word.errors, status: :unprocessable_entity }
       end
@@ -79,6 +86,20 @@ class WordsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to words_url }
       format.json { head :no_content }
+    end
+  end
+
+  def set_translation
+    @word = Word.find(params[:id])
+    if @word.polish_word?
+      @translation = Translation.english_translations(@word.in_polish).inspect
+    else
+      @translation = Translation.polish_translations(@word.in_english).inspect
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @translation }
     end
   end
 
