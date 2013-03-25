@@ -125,7 +125,6 @@ class WordsController < ApplicationController
     return render action_name
   end
 
-
   def context
     Word.where(:user_id => current_user.id)
   end
