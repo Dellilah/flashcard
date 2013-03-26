@@ -20,9 +20,9 @@
         <div class="nav-collapse collapse">
           <ul class="nav">
             <% if !signed_in? %>
-              <li><%= link_to "Sign up", signup_path %></a></li>
-              <li><%= link_to "Sign in", signin_path %></a></li>
-              <li><%= link_to "Sign in with FB", "/auth/facebook" %></li>
+              <li><%= link_to '<img src="/sign.svg"> Sign up'.html_safe, signup_path %></a></li>
+              <li><%= link_to '<img src="/login.svg"> Login'.html_safe, signin_path %></a></li>
+              <li><%= link_to '<img src="/face.svg"> Sign in with FB'.html_safe, "/auth/facebook" %></li>
             <% else %>
               <li><%= link_to '<img src="/user.svg"> Profile'.html_safe, current_user %></a></li>
               <li><%= link_to '<img src="/words.svg"> Words'.html_safe,  words_path  %></a></li>
@@ -44,6 +44,7 @@
 
   </div>
 
-<%= debug(params) if Rails.env.development? %>
+<!-- <%= debug(params) if Rails.env.development? %> -->
+
 </body>
 </html>
