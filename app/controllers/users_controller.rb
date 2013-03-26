@@ -35,10 +35,9 @@ class UsersController < ApplicationController
     end
   end
 
-  private 
-
+  private
   def ensure_signing_in
-    unless signed_in? #signed_in? in SessionsHelper 
+    unless signed_in? #signed_in? in SessionsHelper
       store_location
       redirect_to signin_path, notice: "Please sign in"
     end

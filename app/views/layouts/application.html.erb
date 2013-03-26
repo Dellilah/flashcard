@@ -25,6 +25,7 @@
               <li><%= link_to "Sign in with FB", "/auth/facebook" %></li>
             <% else %>
               <li><%= link_to '<img src="user.svg"> Profile'.html_safe, current_user %></a></li>
+              <li><%= link_to "Words", words_path  %></a></li>
               <li><%= link_to '<img src="gear.svg"> Settings'.html_safe, edit_user_path(current_user) %></a></li>
               <li><%= link_to '<img src="exit.svg"> Sign out'.html_safe, signout_path, method: :delete %></a></li>
             <% end %>

@@ -4,6 +4,7 @@ gem 'rails', '3.2.12'
 gem 'jquery-rails', '2.0.2'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'omniauth-facebook', '1.4.1'
+gem 'json', '1.7.7'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'
@@ -12,6 +13,8 @@ end
 
 group :development do
   gem 'annotate', '2.5.0'
+  gem 'pry-rails'
+  gem 'awesome_print'
 end
 
 group :test do

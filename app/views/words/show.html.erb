@@ -1,0 +1,17 @@
+<p>
+  <b>In polish:</b>
+  <%= @word.in_polish %>
+</p>
+
+<p>
+  <b>In english:</b>
+  <%= @word.in_english %>
+</p>
+
+<p>
+  <%= link_to('Get translation from polish', set_english_translation_path(@word), :class => 'btn btn-primary') %>
+  <%= link_to('Get translation from english', set_polish_translation_path(@word), :class => 'btn btn-info') %>
+</p>
+
+<%= link_to 'Edit', edit_word_path(@word) %> |
+<%= link_to 'All words', words_path %>
