@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -16,7 +16,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <%= link_to "FlashCard", root_path, class: "brand" %>
+        <%= link_to '<img src="card.svg"> FlashCard'.html_safe, root_path, class: "brand" %>
         <div class="nav-collapse collapse">
           <ul class="nav">
             <% if !signed_in? %>
@@ -24,9 +24,9 @@
               <li><%= link_to "Sign in", signin_path %></a></li>
               <li><%= link_to "Sign in with FB", "/auth/facebook" %></li>
             <% else %>
-              <li><%= link_to "Profile", current_user %></a></li>
-              <li><%= link_to "Settings", edit_user_path(current_user) %></a></li>
-              <li><%= link_to "Sign out", signout_path, method: :delete %></a></li>
+              <li><%= link_to '<img src="user.svg"> Profile'.html_safe, current_user %></a></li>
+              <li><%= link_to '<img src="gear.svg"> Settings'.html_safe, edit_user_path(current_user) %></a></li>
+              <li><%= link_to '<img src="exit.svg"> Sign out'.html_safe, signout_path, method: :delete %></a></li>
             <% end %>
           </ul>
         </div><!--/.nav-collapse -->
