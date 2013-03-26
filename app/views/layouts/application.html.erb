@@ -26,10 +26,14 @@
                 <li class="menu-item"><%= link_to '<img src="/sign.svg"> Sign up'.html_safe, signup_path %></a></li>
                 <li class="menu-item"><%= link_to '<img src="/face.svg"> Sign in with FB'.html_safe, "/auth/facebook" %></li>
               <% else %>
-                <li class="menu-item"><%= link_to '<img src="/words.svg"> Words'.html_safe,  words_path  %></a></li>
-                <li class="menu-item"><%= link_to '<img src="/user.svg"> Profile'.html_safe, current_user %></a></li>
-                <li class="menu-item"><%= link_to '<img src="/gear.svg"> Settings'.html_safe, edit_user_path(current_user) %></a></li>
-                <li class="menu-item"><%= link_to '<img src="/exit.svg"> Sign out'.html_safe, signout_path, method: :delete %></a></li>
+                <li class="menu-item <%= 'active' if params[:controller] == 'words' %>">
+                  <%= link_to '<img src="/words.svg"> Words'.html_safe,  words_path  %></a></li>
+                <li class="menu-item <%= 'active' if params[:controller] == 'users' and params[:action] == 'show' %>">
+                  <%= link_to '<img src="/user.svg"> Profile'.html_safe, current_user %></a></li>
+                <li class="menu-item <%= 'active' if params[:controller] == 'users' and params[:action] == 'edit' %>">
+                  <%= link_to '<img src="/gear.svg"> Settings'.html_safe, edit_user_path(current_user) %></a></li>
+                <li class="menu-item <%= 'active' if params[:controller] == 'controller1' %>">
+                  <%= link_to '<img src="/exit.svg"> Sign out'.html_safe, signout_path, method: :delete %></a></li>
               <% end %>
             </ul>
           </div><!--/.nav-collapse -->
@@ -47,7 +51,6 @@
 
   </div>
 
-<!-- <%= debug(params) if Rails.env.development? %> -->
-
+<!-- <%= debug(params) if Rails.env.development? %> -->s
 </body>
 </html>
