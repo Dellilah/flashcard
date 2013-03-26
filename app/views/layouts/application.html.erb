@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -17,15 +18,15 @@
           <span class="icon-bar"></span>
         </a>
         <%= link_to '<img src="/card.svg"> FlashCard'.html_safe, root_path, class: "brand" %>
-        <div class="nav-collapse collapse">
+        <div class="nav-collapse collapse item">
           <ul class="nav">
             <% if !signed_in? %>
-              <li><%= link_to '<img src="/sign.svg"> Sign up'.html_safe, signup_path %></a></li>
               <li><%= link_to '<img src="/login.svg"> Login'.html_safe, signin_path %></a></li>
+              <li><%= link_to '<img src="/sign.svg"> Sign up'.html_safe, signup_path %></a></li>
               <li><%= link_to '<img src="/face.svg"> Sign in with FB'.html_safe, "/auth/facebook" %></li>
             <% else %>
-              <li><%= link_to '<img src="/user.svg"> Profile'.html_safe, current_user %></a></li>
               <li><%= link_to '<img src="/words.svg"> Words'.html_safe,  words_path  %></a></li>
+              <li><%= link_to '<img src="/user.svg"> Profile'.html_safe, current_user %></a></li>
               <li><%= link_to '<img src="/gear.svg"> Settings'.html_safe, edit_user_path(current_user) %></a></li>
               <li><%= link_to '<img src="/exit.svg"> Sign out'.html_safe, signout_path, method: :delete %></a></li>
             <% end %>
