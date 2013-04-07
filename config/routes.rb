@@ -1,4 +1,6 @@
 Flashcard::Application.routes.draw do
+  mount Api::Engine => "/api"
+
   resources :words
   match 'words/:id/set_translation', to: 'Words#set_translation', :as => :set_translation
   match 'words/:id/from_pl/set_translation', to: 'Words#set_english_translation', :as => :set_english_translation

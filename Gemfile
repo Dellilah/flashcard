@@ -5,6 +5,7 @@ gem 'jquery-rails', '2.0.2'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'omniauth-facebook', '1.4.1'
 gem 'json', '1.7.7'
+gem 'api', :path => './engines/api'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'

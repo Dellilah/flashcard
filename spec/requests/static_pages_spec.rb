@@ -11,7 +11,7 @@ describe "Static pages" do
     click_link "FlashCard"
     should have_content('Welcome')
 
-    click_link "Sign in"
+    click_link "Login"
     should have_selector('h1',    text: 'Sign in')
     should have_selector('title', text: full_title('Sign in'))
 

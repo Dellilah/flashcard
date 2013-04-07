@@ -126,7 +126,7 @@ class WordsController < ApplicationController
   end
 
   def context
-    Word.where(:user_id => current_user.id)
+    current_user.words
   end
 
   def ensure_logged_in

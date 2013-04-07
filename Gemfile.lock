@@ -1,3 +1,9 @@
+PATH
+  remote: ./engines/api
+  specs:
+    api (0.0.1)
+      rails (~> 3.2.12)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -179,6 +185,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (= 2.5.0)
+  api!
   awesome_print
   bcrypt-ruby (= 3.0.1)
   capybara (= 1.1.2)
