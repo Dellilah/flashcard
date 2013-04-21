@@ -48,3 +48,22 @@ body {
 .btn-primary {
   
 }
+
+h1, h4, h3 {
+  text-align: center;
+}
+
+.card {
+  width: 300px;
+  height: 108px;
+  margin: auto;
+  margin-top: 40px;
+  border: 3px solid black;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.card:hover {
+  background-color: #E3E3E3;
+  text-decoration: none; 
+}

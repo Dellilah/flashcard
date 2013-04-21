@@ -1,4 +1,6 @@
 Flashcard::Application.routes.draw do
+  get "memo/home"
+
   mount Api::Engine => "/api"
 
   resources :words
