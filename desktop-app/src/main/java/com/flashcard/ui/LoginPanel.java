@@ -1,6 +1,6 @@
-package com.ghx.ui;
+package com.flashcard.ui;
 
-import com.ghx.system.Settings;
+import com.flashcard.system.Settings;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,7 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 
 /**
  * User: ghaxx
@@ -27,6 +26,7 @@ public class LoginPanel {
     private JButton loginButton;
     private JPanel panel;
     private JLabel message;
+    private JButton quitButton;
 
     public LoginPanel(final LoginWindow loginWindow) {
         loginField.setText(Settings.getLogin());
@@ -64,6 +64,12 @@ public class LoginPanel {
                     e.printStackTrace();
                     message.setText("The supplied credentials could not be regarded as correct (G)");
                 }
+            }
+        });
+
+        quitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.exit(0);
             }
         });
     }

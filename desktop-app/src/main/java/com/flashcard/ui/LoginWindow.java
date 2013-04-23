@@ -1,18 +1,11 @@
-package com.ghx.ui;
+package com.flashcard.ui;
 
-import com.ghx.system.Settings;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.InputStream;
-import java.net.URI;
 
 /**
  * User: ghaxx
@@ -25,6 +18,7 @@ public class LoginWindow extends JFrame {
 
     public LoginWindow() {
         super("FlashCard");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         loginPanel = new LoginPanel(this);
         add(loginPanel.getPanel());
         pack();

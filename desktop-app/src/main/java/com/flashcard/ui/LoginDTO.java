@@ -1,4 +1,4 @@
-package com.ghx.ui;
+package com.flashcard.ui;
 
 /**
  * User: ghaxx
