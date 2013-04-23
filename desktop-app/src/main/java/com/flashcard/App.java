@@ -1,8 +1,7 @@
-package com.ghx;
+package com.flashcard;
 
-import com.ghx.system.Settings;
-import com.ghx.ui.AppWindow;
-import com.ghx.ui.LoginWindow;
+import com.flashcard.system.Settings;
+import com.flashcard.ui.LoginWindow;
 
 /**
  * User: ghaxx

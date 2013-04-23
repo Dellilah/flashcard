@@ -1,4 +1,4 @@
-package com.ghx.ui;
+package com.flashcard.ui;
 
 import javax.swing.*;
 import java.awt.*;

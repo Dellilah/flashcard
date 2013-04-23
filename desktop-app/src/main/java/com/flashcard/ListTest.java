@@ -1,8 +1,7 @@
-package com.ghx;
+package com.flashcard;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 class Producer implements Runnable {
 

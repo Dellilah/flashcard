@@ -1,4 +1,4 @@
-package com.ghx.system;
+package com.flashcard.system;
 
 import java.io.*;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
-package com.ghx.ui;
+package com.flashcard.ui;
 
-import com.ghx.system.Settings;
+import com.flashcard.system.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

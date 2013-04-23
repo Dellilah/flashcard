@@ -1,6 +1,6 @@
-package com.ghx.ui;
+package com.flashcard.ui;
 
-import com.ghx.system.Settings;
+import com.flashcard.system.Settings;
 import com.google.gson.Gson;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Form;
