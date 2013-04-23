@@ -17,7 +17,7 @@ public class AppWindow extends JFrame {
 
     public AppWindow() {
         super("FlashCard");
-        mainPanel = new MainPanel();
+        mainPanel = new MainPanel(this);
         add(mainPanel.getPanel());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         MenuBar menuBar = new MenuBar();
