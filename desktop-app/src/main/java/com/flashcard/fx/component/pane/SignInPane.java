@@ -2,6 +2,7 @@ package com.flashcard.fx.component.pane;
 
 import com.flashcard.fx.App;
 import com.flashcard.fx.scene.TranslationScene;
+import com.flashcard.system.Service;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,11 +19,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
-* User: ghaxx
-* Date: 26/04/2013
-* Time: 10:57
-*/
+ * User: ghaxx
+ * Date: 26/04/2013
+ * Time: 10:57
+ */
 public class SignInPane extends GridPane {
+
+    private final TextField emailTextField;
+    private final PasswordField passwordField;
+
     public SignInPane() {
         setAlignment(Pos.CENTER);
         setHgap(10);
@@ -36,14 +41,14 @@ public class SignInPane extends GridPane {
         Label userName = new Label("Email:");
         add(userName, 0, 1);
 
-        TextField userTextField = new TextField();
-        add(userTextField, 1, 1);
+        emailTextField = new TextField();
+        add(emailTextField, 1, 1);
 
         Label pw = new Label("Password:");
         add(pw, 0, 2);
 
-        PasswordField pwBox = new PasswordField();
-        add(pwBox, 1, 2);
+        passwordField = new PasswordField();
+        add(passwordField, 1, 2);
 
         Button btn = new Button("Continue");
         HBox hbBtn = new HBox(10);
@@ -51,16 +56,24 @@ public class SignInPane extends GridPane {
         hbBtn.getChildren().add(btn);
         add(hbBtn, 1, 4);
 
-        final Text actiontarget = new Text();
-        add(actiontarget, 1, 6);
+        final Text message = new Text();
+        add(message, 1, 6);
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
-            public void handle(ActionEvent e) {
-                actiontarget.setFill(Color.FIREBRICK);
-                actiontarget.setText("Sign in button pressed");
-                App.getInstance().setScene(new TranslationScene());
+            public void handle(ActionEvent event) {
+                message.setFill(Color.FIREBRICK);
+                message.setText("Verifying data...");
+
+                try {
+                    Service.signIn(emailTextField.getText(), passwordField.getText());
+                    App.getInstance().setScene(new TranslationScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    message.setText(e.getMessage());
+                    App.getInstance().getPrimaryStage().sizeToScene();
+                }
             }
         });
     }
