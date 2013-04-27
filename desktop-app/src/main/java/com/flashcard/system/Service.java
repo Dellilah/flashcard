@@ -1,6 +1,7 @@
 package com.flashcard.system;
 
 import com.flashcard.dto.LoginDTO;
+import com.flashcard.dto.WordDTO;
 import com.google.gson.Gson;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Form;
@@ -54,7 +55,20 @@ public class Service {
         } catch (IOException e) {
             throw new Exception("Cannot translate");
         }
+    }
 
+    public static List<WordDTO> wordsIndex() throws Exception {
+        try {
+            String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
+            Content s = Request.Get(uri).execute().returnContent();
+            System.out.println(s.asString());
+            Gson gson = new Gson();
+            System.out.println(s.asString());
+            WordDTO[] result = gson.fromJson(s.asString(), WordDTO[].class);
+            return Arrays.asList(result);
+        } catch (IOException e) {
+            throw new Exception("Cannot translate");
+        }
     }
 
     public static void addNewWord(String englishWord, String polishWord) throws Exception{
