@@ -56,4 +56,20 @@ public class Service {
         }
 
     }
+
+    public static void addNewWord(String englishWord, String polishWord) throws Exception{
+        try{
+            String uri =Settings.getHost() + "/api/words.json?api_token="+Settings.getToken();
+            Content s = Request.Post(uri)
+                    .bodyForm(
+                            Form.form()
+                                    .add("in_english", englishWord)
+                                    .add("in_polish", polishWord)
+                                    .build()
+                    ).execute().returnContent();
+        }
+        catch (IOException e){
+            throw new Exception("Something's wrong, Jim.");
+        }
+    }
 }
