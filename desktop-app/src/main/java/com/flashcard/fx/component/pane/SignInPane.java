@@ -3,6 +3,7 @@ package com.flashcard.fx.component.pane;
 import com.flashcard.fx.App;
 import com.flashcard.fx.scene.TranslationScene;
 import com.flashcard.system.Service;
+import com.flashcard.system.Settings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -41,13 +42,14 @@ public class SignInPane extends GridPane {
         Label userName = new Label("Email:");
         add(userName, 0, 1);
 
-        emailTextField = new TextField();
+        emailTextField = new TextField(Settings.getLogin());
         add(emailTextField, 1, 1);
 
         Label pw = new Label("Password:");
         add(pw, 0, 2);
 
         passwordField = new PasswordField();
+        passwordField.setText(Settings.getPassword());
         add(passwordField, 1, 2);
 
         Button btn = new Button("Continue");
@@ -67,8 +69,8 @@ public class SignInPane extends GridPane {
                 message.setText("Verifying data...");
 
                 try {
-                    Service.signIn(emailTextField.getText(), passwordField.getText());
-                    App.getInstance().setScene(new TranslationScene());
+                    if(Service.signIn(emailTextField.getText(), passwordField.getText()))
+                        App.getInstance().setScene(new TranslationScene());
                 } catch (Exception e) {
                     e.printStackTrace();
                     message.setText(e.getMessage());

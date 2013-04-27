@@ -36,12 +36,13 @@ public class Service {
         Gson gson = new Gson();
         LoginDTO loginDTO = gson.fromJson(s.asString(), LoginDTO.class);
         System.out.println(loginDTO.getApi_token());
-        if (loginDTO.getMessage() == null && loginDTO.getApi_token() != null) {
-            App.getInstance().setScene(new TranslationScene());
-        } else {
+        if (loginDTO.getMessage() != null || loginDTO.getApi_token() == null) {
             throw new Exception("The supplied credentials could not be regarded as correct (G)");
         }
         Settings.setToken(loginDTO.getApi_token());
+        Settings.setLogin(email);
+        Settings.setPassword(password);
+        Settings.writeSettings();
         return true;
     }
 
