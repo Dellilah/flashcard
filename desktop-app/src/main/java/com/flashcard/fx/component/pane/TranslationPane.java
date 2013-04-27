@@ -90,12 +90,34 @@ public class TranslationPane extends GridPane {
         public void handle(ActionEvent e) {
             resultsBox.getChildren().removeAll(resultsBox.getChildren());
             try {
-                List<String> resultList = Service.getTranslation(from, wordTextField.getText());
+                final String wordToBeTranslated = wordTextField.getText();
+                List<String> resultList = Service.getTranslation(from, wordToBeTranslated);
                 for (String s : resultList) {
+                    final String ss = s;
                     Text text = new Text(s);
                     HBox box = new HBox(10);
-                    Button button = new Button("+");
-                    box.getChildren().add(button);
+                    Button addButton = new Button("+");
+                    addButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent keyEvent) {
+                            String englishWord = "";
+                            String polishWord ="";
+                            if (from== Service.Language.en){
+                                polishWord=ss;
+                                englishWord=wordToBeTranslated;
+                            } else{
+                                englishWord=ss;
+                                polishWord=wordToBeTranslated;
+                            }
+
+                            try {
+                                Service.addNewWord(englishWord, polishWord);
+                            } catch (Exception e1) {
+                                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            }
+                        }
+                    });
+                    box.getChildren().add(addButton);
                     box.getChildren().add(text);
                     resultsBox.getChildren().add(box);
                 }
