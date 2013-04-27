@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -31,13 +33,16 @@ import java.util.List;
  */
 public class TranslationPane extends GridPane {
 
+    private static TranslationPane instance;
     private final VBox resultsBox;
     private final TextField wordTextField;
 
-    public TranslationPane() {
+    private TranslationPane() {
         setAlignment(Pos.CENTER);
         setHgap(10);
         setVgap(10);
+        setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(this, Priority.ALWAYS);
         setPadding(new Insets(25, 25, 25, 25));
 
         Text sceneTitle = new Text("Translate");
@@ -46,6 +51,7 @@ public class TranslationPane extends GridPane {
 
 
         wordTextField = new TextField();
+        wordTextField.setMaxWidth(Double.MAX_VALUE);
         add(wordTextField, 0, 1, 2, 1);
 
 
@@ -85,6 +91,12 @@ public class TranslationPane extends GridPane {
                 resultsBox.getChildren().removeAll(resultsBox.getChildren());
             }
         });
+    }
+
+    public static TranslationPane getInstance() {
+        if (instance == null)
+            instance = new TranslationPane();
+        return instance;
     }
 
     private class Translate implements EventHandler<ActionEvent> {

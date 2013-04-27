@@ -1,13 +1,19 @@
 package com.flashcard.fx.component.pane;
 
+import com.flashcard.fx.App;
+import com.flashcard.system.Settings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 /**
  * User: ghaxx
@@ -17,6 +23,9 @@ import javafx.scene.layout.VBox;
 public class UserPane extends VBox {
 
     private HBox container;
+    private ToggleButton translateButton;
+    private ToggleButton addWordButton;
+    private ToggleButton wordListButton;
 
     public UserPane() {
         init();
@@ -25,28 +34,59 @@ public class UserPane extends VBox {
     private void init() {
         ToolBar toolBar = new ToolBar();
 
-        Region spacer = new Region();
-        spacer.getStyleClass().setAll("spacer");
+        translateButton = new ToggleButton("Translate");
+        addWordButton = new ToggleButton("Add Word");
+        wordListButton = new ToggleButton("Word List");
 
-        HBox ToggleButtonBar = new HBox();
         ToggleGroup group = new ToggleGroup();
-        ToggleButton translateButton = new ToggleButton("Translate");
+        translateButton.setSelected(true);
         translateButton.setToggleGroup(group);
-        ToggleButton addWordButton = new ToggleButton("Add Word");
-        translateButton.setToggleGroup(group);
-        ToggleButton wordListButton = new ToggleButton("Word List");
-        translateButton.setToggleGroup(group);
-        toolBar.getItems().addAll(translateButton, addWordButton, wordListButton);
+        addWordButton.setToggleGroup(group);
+        wordListButton.setToggleGroup(group);
+
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) {
+                if (new_toggle == translateButton) {
+                    UserPane.this.setContent(TranslationPane.getInstance());
+                } else if (new_toggle == wordListButton) {
+                    UserPane.this.setContent(WordListPane.getInstance());
+                } else {
+                    UserPane.this.setContent(new HBox());
+                }
+//                    if (new_toggle == null)
+//                        rect.setFill(Color.WHITE);
+//                    else
+//                        rect.setFill(
+//                            (Color) group.getSelectedToggle().getUserData()
+//                        );
+            }
+        });
+
+        Text text = new Text("Hello, " + Settings.getLogin());
+        HBox textBox = new HBox();
+        textBox.setPadding(new Insets(0, 0, 0, 20));
+        HBox.setHgrow(textBox, Priority.ALWAYS);
+        textBox.getChildren().add(text);
+        textBox.setAlignment(Pos.CENTER_RIGHT);
+        textBox.setMaxWidth(Double.MAX_VALUE);
+
+        HBox buttonsBox = new HBox();
+        buttonsBox.setSpacing(10);
+        buttonsBox.setAlignment(Pos.BASELINE_LEFT);
+        buttonsBox.getChildren().addAll(translateButton, addWordButton, wordListButton);
+        toolBar.getItems().addAll(buttonsBox, textBox);
+        toolBar.setMaxWidth(Double.MAX_VALUE);
+        container = new HBox();
 
         getChildren().add(toolBar);
-        container = new HBox();
         getChildren().add(container);
-        container.getChildren().add(new TranslationPane());
+
+        container.getChildren().add(TranslationPane.getInstance());
     }
 
-    public void setContent(Parent parent) {
+    public void setContent(Parent content) {
         container.getChildren().removeAll(container.getChildren());
-
-        container.getChildren().add(parent);
+        container.getChildren().add(content);
+        App.getInstance().getPrimaryStage().sizeToScene();
     }
 }
