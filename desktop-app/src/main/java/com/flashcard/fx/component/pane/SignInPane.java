@@ -5,7 +5,9 @@ import com.flashcard.fx.scene.TranslationScene;
 import com.flashcard.system.Service;
 import com.flashcard.system.Settings;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -52,14 +54,33 @@ public class SignInPane extends GridPane {
         passwordField.setText(Settings.getPassword());
         add(passwordField, 1, 2);
 
+
+        final Text message = new Text();
+        add(message, 1, 6);
+
+        passwordField.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                message.setFill(Color.FIREBRICK);
+                message.setText("Verifying data...");
+
+                try {
+                    if(Service.signIn(emailTextField.getText(), passwordField.getText()))
+                        App.getInstance().setScene(new TranslationScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    message.setText(e.getMessage());
+                    App.getInstance().getPrimaryStage().sizeToScene();
+                }
+            }
+        });
+
         Button btn = new Button("Continue");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
         add(hbBtn, 1, 4);
 
-        final Text message = new Text();
-        add(message, 1, 6);
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
 

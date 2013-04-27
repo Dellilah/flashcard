@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -69,6 +70,13 @@ public class TranslationPane extends GridPane {
 
         toEnglishButton.setOnAction(new Translate(Service.Language.pl));
         toPolishButton.setOnAction(new Translate(Service.Language.en));
+
+        wordTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                resultsBox.getChildren().removeAll(resultsBox.getChildren());
+            }
+        });
     }
 
     private class Translate implements EventHandler<ActionEvent> {
