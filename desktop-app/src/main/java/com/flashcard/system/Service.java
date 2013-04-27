@@ -9,6 +9,9 @@ import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: ghaxx
@@ -16,6 +19,9 @@ import java.io.IOException;
  * Time: 11:25
  */
 public class Service {
+    public enum Language {
+        en, pl
+    }
     public static boolean signIn(String email, String password) throws Exception {
 
         String url = Settings.getHost() + "/api/login.json";
@@ -37,5 +43,19 @@ public class Service {
         }
         Settings.setToken(loginDTO.getApi_token());
         return true;
+    }
+
+    public static List<String> getTranslation(Language fromLanguage, String word) throws Exception {
+        try {
+            String uri = Settings.getHost() + "/api/words/from_" + fromLanguage.name() + "/" + word + ".json?api_token=" + Settings.getToken();
+            Content s = Request.Get(uri).execute().returnContent();
+            System.out.println(s.asString());
+            Gson gson = new Gson();
+            String[] result = gson.fromJson(s.asString(), String[].class);
+            return Arrays.asList(result);
+        } catch (IOException e) {
+            throw new Exception("Cannot translate");
+        }
+
     }
 }

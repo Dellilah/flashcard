@@ -2,6 +2,7 @@ package com.flashcard.fx.component.pane;
 
 import com.flashcard.fx.App;
 import com.flashcard.fx.scene.TranslationScene;
+import com.flashcard.system.Service;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,6 +20,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.List;
+
 /**
  * User: ghaxx
  * Date: 26/04/2013
@@ -27,6 +30,7 @@ import javafx.scene.text.Text;
 public class TranslationPane extends GridPane {
 
     private final VBox resultsBox;
+    private final TextField wordTextField;
 
     public TranslationPane() {
         setAlignment(Pos.CENTER);
@@ -39,7 +43,7 @@ public class TranslationPane extends GridPane {
         add(sceneTitle, 0, 0, 2, 1);
 
 
-        TextField wordTextField = new TextField();
+        wordTextField = new TextField();
         add(wordTextField, 0, 1, 2, 1);
 
 
@@ -48,7 +52,6 @@ public class TranslationPane extends GridPane {
 //        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 //        hbBtn.getChildren().add(btn);
         add(btn, 0, 2);
-
 
         Button btn2 = new Button("To Polish");
         add(btn2, 1, 2);
@@ -68,7 +71,15 @@ public class TranslationPane extends GridPane {
 
             @Override
             public void handle(ActionEvent e) {
-                resultsBox.getChildren().add(new Text("A result"));
+                resultsBox.getChildren().removeAll();
+                try {
+                    List<String> resultList = Service.getTranslation(Service.Language.en, wordTextField.getText());
+                    for (String s : resultList) {
+                        resultsBox.getChildren().add(new Text(s));
+                    }
+                } catch (Exception e1) {
+
+                }
                 App.getInstance().getPrimaryStage().sizeToScene();
             }
         });
