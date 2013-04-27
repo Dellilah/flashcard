@@ -47,14 +47,14 @@ public class TranslationPane extends GridPane {
         add(wordTextField, 0, 1, 2, 1);
 
 
-        Button btn = new Button("To English");
+        Button toEnglishButton = new Button("To English");
 //        HBox hbBtn = new HBox(10);
 //        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-//        hbBtn.getChildren().add(btn);
-        add(btn, 0, 2);
+//        hbBtn.getChildren().add(toEnglishButton);
+        add(toEnglishButton, 0, 2);
 
-        Button btn2 = new Button("To Polish");
-        add(btn2, 1, 2);
+        Button toPolishButton = new Button("To Polish");
+        add(toPolishButton, 1, 2);
 
         Text resultsTitle = new Text("Results:");
         resultsTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
@@ -67,21 +67,29 @@ public class TranslationPane extends GridPane {
         pane.setMaxHeight(140);
         add(pane, 0, 4, 2, 1);
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        toEnglishButton.setOnAction(new Translate(Service.Language.pl));
+        toPolishButton.setOnAction(new Translate(Service.Language.en));
+    }
 
-            @Override
-            public void handle(ActionEvent e) {
-                resultsBox.getChildren().removeAll();
-                try {
-                    List<String> resultList = Service.getTranslation(Service.Language.en, wordTextField.getText());
-                    for (String s : resultList) {
-                        resultsBox.getChildren().add(new Text(s));
-                    }
-                } catch (Exception e1) {
+    private class Translate implements EventHandler<ActionEvent> {
+        private Service.Language from;
 
+        private Translate(Service.Language from) {
+            this.from = from;
+        }
+
+        @Override
+        public void handle(ActionEvent e) {
+            resultsBox.getChildren().removeAll(resultsBox.getChildren());
+            try {
+                List<String> resultList = Service.getTranslation(from, wordTextField.getText());
+                for (String s : resultList) {
+                    resultsBox.getChildren().add(new Text(s));
                 }
-                App.getInstance().getPrimaryStage().sizeToScene();
+            } catch (Exception e1) {
+
             }
-        });
+            App.getInstance().getPrimaryStage().sizeToScene();
+        }
     }
 }
