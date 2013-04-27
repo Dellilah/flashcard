@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
+import sun.nio.cs.UTF_32;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -65,11 +66,14 @@ public class Service {
                             Form.form()
                                     .add("in_english", englishWord)
                                     .add("in_polish", polishWord)
-                                    .build()
+                                    .build()//,
+                            //new UTF_32()
                     ).execute().returnContent();
         }
         catch (IOException e){
-            throw new Exception("Something's wrong, Jim.");
+            System.out.println("IT'S HEEEEERE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
