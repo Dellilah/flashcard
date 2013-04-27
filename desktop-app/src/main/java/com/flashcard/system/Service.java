@@ -21,6 +21,7 @@ public class Service {
     public enum Language {
         en, pl
     }
+
     public static boolean signIn(String email, String password) throws Exception {
 
         String url = Settings.getHost() + "/api/login.json";
@@ -72,9 +73,9 @@ public class Service {
         }
     }
 
-    public static void addNewWord(String englishWord, String polishWord) throws Exception{
-        try{
-            String uri =Settings.getHost() + "/api/words.json?api_token="+Settings.getToken();
+    public static void addNewWord(String englishWord, String polishWord) throws Exception {
+        try {
+            String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
             Content s = Request.Post(uri)
                     .bodyForm(
                             Form.form()
@@ -83,11 +84,21 @@ public class Service {
                                     .build()//,
                             //new UTF_32()
                     ).execute().returnContent();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println("IT'S HEEEEERE");
             System.out.println(e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public static void deleteWord(Integer id) throws Exception {
+        try {
+            String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
+            Content s = Request.Delete(uri).execute().returnContent();
+            System.out.println(s.asString());
+            System.out.println(s.asString());
+        } catch (IOException e) {
+            throw new Exception("Cannot delete word");
         }
     }
 }

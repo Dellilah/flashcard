@@ -76,7 +76,10 @@ public class UserPane extends VBox {
         buttonsBox.getChildren().addAll(translateButton, addWordButton, wordListButton);
         toolBar.getItems().addAll(buttonsBox, textBox);
         toolBar.setMaxWidth(Double.MAX_VALUE);
+
         container = new HBox();
+        container.setMaxWidth(Double.MAX_VALUE);
+        HBox.getHgrow(container);
 
         getChildren().add(toolBar);
         getChildren().add(container);
@@ -87,6 +90,7 @@ public class UserPane extends VBox {
     public void setContent(Parent content) {
         container.getChildren().removeAll(container.getChildren());
         container.getChildren().add(content);
+        HBox.setHgrow(content, Priority.ALWAYS);
         App.getInstance().getPrimaryStage().sizeToScene();
     }
 }
