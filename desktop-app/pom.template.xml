@@ -6,8 +6,8 @@
     <packaging>jar</packaging>
     <name>FlashCard</name>
     <properties>
-        <javafx.version>2.2</javafx.version>
-        <javafx.runtime.lib.jar>/Library/Java/JavaVirtualMachines/jdk1.7.0_13.jdk/Contents/Home/jre/lib/jfxrt.jar</javafx.runtime.lib.jar>
+        <javafx.version>!Change: 2.2.3</javafx.version>
+        <javafx.runtime.lib.jar>!Change: /opt/lib/jdk1.7.0_13.jdk/jre/lib/jfxrt.jar</javafx.runtime.lib.jar>
     </properties>
     <repositories>
         <repository>
