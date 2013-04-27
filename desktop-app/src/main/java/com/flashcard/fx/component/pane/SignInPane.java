@@ -5,11 +5,10 @@ import com.flashcard.fx.scene.UserScene;
 import com.flashcard.system.Service;
 import com.flashcard.system.Settings;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -85,7 +84,7 @@ public class SignInPane extends GridPane {
 
             try {
                 if(Service.signIn(emailTextField.getText(), passwordField.getText()))
-                    App.getInstance().setScene(new UserScene());
+                    App.getInstance().setScene(new Scene(new WordListPane()));
             } catch (Exception e) {
                 e.printStackTrace();
                 message.setText(e.getMessage());
