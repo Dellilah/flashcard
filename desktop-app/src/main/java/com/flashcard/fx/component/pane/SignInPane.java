@@ -1,10 +1,13 @@
 package com.flashcard.fx.component.pane;
 
 import com.flashcard.fx.App;
+import com.flashcard.fx.scene.UserScene;
 import com.flashcard.system.Service;
 import com.flashcard.system.Settings;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -83,7 +86,7 @@ public class SignInPane extends GridPane {
 
             try {
                 if(Service.signIn(emailTextField.getText(), passwordField.getText()))
-                    App.getInstance().setScene(new Scene(new WordListPane()));
+                    App.getInstance().setScene(new UserScene());
             } catch (Exception e) {
                 e.printStackTrace();
                 message.setText(e.getMessage());
