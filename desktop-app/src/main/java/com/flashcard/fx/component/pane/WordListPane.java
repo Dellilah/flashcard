@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -38,6 +39,7 @@ import javafx.scene.control.TableView;
  * Time: 14:03
  */
 public class WordListPane extends GridPane {
+    private static WordListPane instance;
     TableView<WordDTO> wordList;
 
    public WordListPane() {
@@ -86,4 +88,9 @@ public class WordListPane extends GridPane {
 
    }
 
+    public static WordListPane getInstance() {
+        if (instance == null)
+            instance = new WordListPane();
+        return instance;
+    }
 }
