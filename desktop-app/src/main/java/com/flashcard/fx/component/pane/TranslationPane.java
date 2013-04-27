@@ -92,7 +92,12 @@ public class TranslationPane extends GridPane {
             try {
                 List<String> resultList = Service.getTranslation(from, wordTextField.getText());
                 for (String s : resultList) {
-                    resultsBox.getChildren().add(new Text(s));
+                    Text text = new Text(s);
+                    HBox box = new HBox(10);
+                    Button button = new Button("+");
+                    box.getChildren().add(button);
+                    box.getChildren().add(text);
+                    resultsBox.getChildren().add(box);
                 }
             } catch (Exception e1) {
 
