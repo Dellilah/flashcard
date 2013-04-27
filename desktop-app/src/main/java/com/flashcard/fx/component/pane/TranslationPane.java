@@ -1,5 +1,6 @@
 package com.flashcard.fx.component.pane;
 
+import com.flashcard.dto.WordDTO;
 import com.flashcard.fx.App;
 import com.flashcard.fx.scene.TranslationScene;
 import com.flashcard.system.Service;
@@ -70,7 +71,14 @@ public class TranslationPane extends GridPane {
 
         toEnglishButton.setOnAction(new Translate(Service.Language.pl));
         toPolishButton.setOnAction(new Translate(Service.Language.en));
-
+        try {
+            List<WordDTO> list = Service.wordsIndex();
+            for (WordDTO wordDTO : list) {
+                System.out.println(wordDTO.toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         wordTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
