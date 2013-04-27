@@ -2,16 +2,12 @@ package com.flashcard.fx.component.pane;
 
 import com.flashcard.dto.WordDTO;
 import com.flashcard.fx.App;
-import com.flashcard.fx.scene.TranslationScene;
 import com.flashcard.system.Service;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -19,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -121,13 +116,13 @@ public class TranslationPane extends GridPane {
                         @Override
                         public void handle(ActionEvent keyEvent) {
                             String englishWord = "";
-                            String polishWord ="";
-                            if (from== Service.Language.en){
-                                polishWord=ss;
-                                englishWord=wordToBeTranslated;
-                            } else{
-                                englishWord=ss;
-                                polishWord=wordToBeTranslated;
+                            String polishWord = "";
+                            if (from == Service.Language.en) {
+                                polishWord = ss;
+                                englishWord = wordToBeTranslated;
+                            } else {
+                                englishWord = ss;
+                                polishWord = wordToBeTranslated;
                             }
 
                             try {

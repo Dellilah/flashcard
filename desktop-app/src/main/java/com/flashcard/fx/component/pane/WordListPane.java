@@ -1,31 +1,16 @@
 package com.flashcard.fx.component.pane;
 
 import com.flashcard.dto.WordDTO;
-import com.flashcard.fx.App;
-import com.flashcard.fx.scene.TranslationScene;
-import com.flashcard.fx.scene.UserScene;
 import com.flashcard.system.Service;
-import com.flashcard.system.Settings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import java.util.List;
-import java.util.Observable;
 
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
