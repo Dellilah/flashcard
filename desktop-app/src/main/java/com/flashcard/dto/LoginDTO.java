@@ -1,4 +1,4 @@
-package com.flashcard.ui;
+package com.flashcard.dto;
 
 /**
  * User: ghaxx

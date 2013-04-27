@@ -30,6 +30,7 @@ public class SignInPane extends GridPane {
 
     private final TextField emailTextField;
     private final PasswordField passwordField;
+    private final Text message;
 
     public SignInPane() {
         setAlignment(Pos.CENTER);
@@ -37,67 +38,59 @@ public class SignInPane extends GridPane {
         setVgap(10);
         setPadding(new Insets(25, 25, 25, 25));
 
+        message = new Text();
+
         Text sceneTitle = new Text("Please sign in");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        add(sceneTitle, 0, 0, 2, 1);
 
         Label userName = new Label("Email:");
-        add(userName, 0, 1);
 
         emailTextField = new TextField(Settings.getLogin());
+        emailTextField.setOnAction(new SignInHandler(message));
         add(emailTextField, 1, 1);
 
         Label pw = new Label("Password:");
-        add(pw, 0, 2);
 
         passwordField = new PasswordField();
+        passwordField.setOnAction(new SignInHandler(message));
         passwordField.setText(Settings.getPassword());
-        add(passwordField, 1, 2);
 
 
-        final Text message = new Text();
-        add(message, 1, 6);
-
-        passwordField.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                message.setFill(Color.FIREBRICK);
-                message.setText("Verifying data...");
-
-                try {
-                    if(Service.signIn(emailTextField.getText(), passwordField.getText()))
-                        App.getInstance().setScene(new TranslationScene());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    message.setText(e.getMessage());
-                    App.getInstance().getPrimaryStage().sizeToScene();
-                }
-            }
-        });
-
-        Button btn = new Button("Continue");
+        Button signInButton = new Button("Continue");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(btn);
+        hbBtn.getChildren().add(signInButton);
+
+        signInButton.setOnAction(new SignInHandler(message));
+
+        add(sceneTitle, 0, 0, 2, 1);
+        add(userName, 0, 1);
+        add(pw, 0, 2);
+        add(passwordField, 1, 2);
+        add(message, 1, 6);
         add(hbBtn, 1, 4);
+    }
 
+    private class SignInHandler implements EventHandler<ActionEvent> {
+        private final Text message;
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        public SignInHandler(Text message) {
+            this.message = message;
+        }
 
-            @Override
-            public void handle(ActionEvent event) {
-                message.setFill(Color.FIREBRICK);
-                message.setText("Verifying data...");
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            message.setFill(Color.FIREBRICK);
+            message.setText("Verifying data...");
 
-                try {
-                    if(Service.signIn(emailTextField.getText(), passwordField.getText()))
-                        App.getInstance().setScene(new TranslationScene());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    message.setText(e.getMessage());
-                    App.getInstance().getPrimaryStage().sizeToScene();
-                }
+            try {
+                if(Service.signIn(emailTextField.getText(), passwordField.getText()))
+                    App.getInstance().setScene(new TranslationScene());
+            } catch (Exception e) {
+                e.printStackTrace();
+                message.setText(e.getMessage());
+                App.getInstance().getPrimaryStage().sizeToScene();
             }
-        });
+        }
     }
 }

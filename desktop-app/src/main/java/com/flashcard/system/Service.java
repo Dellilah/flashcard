@@ -1,15 +1,12 @@
 package com.flashcard.system;
 
-import com.flashcard.fx.App;
-import com.flashcard.fx.scene.TranslationScene;
-import com.flashcard.ui.LoginDTO;
+import com.flashcard.dto.LoginDTO;
 import com.google.gson.Gson;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
