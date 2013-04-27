@@ -1,7 +1,6 @@
 package com.flashcard.fx.component.pane;
 
 import com.flashcard.fx.App;
-import com.flashcard.fx.scene.TranslationScene;
 import com.flashcard.fx.scene.UserScene;
 import com.flashcard.system.Service;
 import com.flashcard.system.Settings;
