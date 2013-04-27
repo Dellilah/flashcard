@@ -2,7 +2,6 @@ package com.flashcard.fx.component.pane;
 
 import com.flashcard.dto.WordDTO;
 import com.flashcard.fx.App;
-import com.flashcard.fx.scene.TranslationScene;
 import com.flashcard.system.Service;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
