@@ -1,16 +1,13 @@
-package com.flashcard.fx.component.pane;
+package com.flashcard.fx.scene.signin.pane;
 
 import com.flashcard.fx.App;
-import com.flashcard.fx.scene.UserScene;
+import com.flashcard.fx.scene.logged.UserScene;
 import com.flashcard.system.Service;
 import com.flashcard.system.Settings;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;

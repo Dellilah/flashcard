@@ -1,7 +1,6 @@
-package com.flashcard.fx.scene;
+package com.flashcard.fx.scene.logged;
 
-import com.flashcard.fx.component.pane.UserPane;
-import javafx.scene.Parent;
+import com.flashcard.fx.scene.logged.pane.UserPane;
 import javafx.scene.Scene;
 
 /**
@@ -12,5 +11,6 @@ import javafx.scene.Scene;
 public class UserScene extends Scene {
     public UserScene() {
         super(new UserPane());
+        getStylesheets().add("main.css");
     }
 }

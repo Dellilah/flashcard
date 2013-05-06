@@ -1,6 +1,6 @@
 package com.flashcard.fx.scene;
 
-import com.flashcard.fx.component.pane.WordListPane;
+import com.flashcard.fx.scene.logged.pane.WordListPane;
 import javafx.scene.Scene;
 
 /**

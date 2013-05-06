@@ -1,4 +1,4 @@
-package com.flashcard.fx.component.pane;
+package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.fx.App;
 import com.flashcard.system.Settings;
@@ -7,7 +7,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -40,9 +39,12 @@ public class UserPane extends VBox {
 
         ToggleGroup group = new ToggleGroup();
         translateButton.setSelected(true);
+        translateButton.getStyleClass().add("button-first");
         translateButton.setToggleGroup(group);
         addWordButton.setToggleGroup(group);
+        addWordButton.getStyleClass().add("button");
         wordListButton.setToggleGroup(group);
+        wordListButton.getStyleClass().add("button-last");
 
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) {
@@ -71,7 +73,8 @@ public class UserPane extends VBox {
         textBox.setMaxWidth(Double.MAX_VALUE);
 
         HBox buttonsBox = new HBox();
-        buttonsBox.setSpacing(10);
+        buttonsBox.setSpacing(0);
+        buttonsBox.getStyleClass().add("button-row");
         buttonsBox.setAlignment(Pos.BASELINE_LEFT);
         buttonsBox.getChildren().addAll(translateButton, addWordButton, wordListButton);
         toolBar.getItems().addAll(buttonsBox, textBox);
