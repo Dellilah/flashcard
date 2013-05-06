@@ -1,4 +1,4 @@
-package com.flashcard.fx.component.pane;
+package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.dto.WordDTO;
 import com.flashcard.fx.App;

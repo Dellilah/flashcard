@@ -1,0 +1,26 @@
+@mixin button {
+  &:focused {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0.0, 0, 1);
+  }
+}
+
+.button {
+  @include button;
+}
+
+.button-row {
+  .button {
+    @include button;
+    -fx-background-radius: 0;
+    //-fx-background-insets: 0 0 -1 0, 0 0 0 0, 1 -1 1 1, 2 1 2 2;
+  }
+  .button-first {
+    @include button;
+    -fx-background-radius: 5 0 0 5;
+    //-fx-background-insets: 0 0 -1 0, 0 0 0 0, 1 1 1 -1, 2 2 2 1;
+  }
+  .button-last {
+    @include button;
+    -fx-background-radius: 0 5 5 0;
+  }
+}

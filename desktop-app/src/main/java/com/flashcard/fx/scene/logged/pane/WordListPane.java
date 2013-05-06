@@ -1,21 +1,15 @@
-package com.flashcard.fx.component.pane;
+package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.dto.WordDTO;
-import com.flashcard.fx.App;
-import com.flashcard.fx.scene.UserScene;
 import com.flashcard.system.Service;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.util.List;

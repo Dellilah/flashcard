@@ -1,6 +1,6 @@
-package com.flashcard.fx.scene;
+package com.flashcard.fx.scene.signin;
 
-import com.flashcard.fx.component.pane.SignInPane;
+import com.flashcard.fx.scene.signin.pane.SignInPane;
 import javafx.scene.Scene;
 
 /**
