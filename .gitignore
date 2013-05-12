@@ -18,3 +18,4 @@
 /config/initializers/omniauth.rb
 
 pom.xml
+/public/uploads
