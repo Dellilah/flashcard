@@ -9,7 +9,14 @@
 </p>
 
 <p>
-  <%= link_to('Get translation from polish', set_english_translation_path(@word), :class => 'btn btn-primary') %>
+  <% if @word.image_url.present? %>
+    <img src="<%= @word.image_url %>" />
+  <% end %>
+</p>
+
+<p>
+  <%= link_to('Edit Image', set_image_path(@word), :class => 'btn btn-primary') %>
+  <%= link_to('Get translation from polish', set_english_translation_path(@word), :class => 'btn btn-alert') %>
   <%= link_to('Get translation from english', set_polish_translation_path(@word), :class => 'btn btn-info') %>
 </p>
 

@@ -2,6 +2,9 @@
 
   <div class="card" id="<%= word.id %>">
     <h3> <%= word.in_english %> </h3>
+    <% if word.image_url.present? %>
+      <img src="<%= word.image_url %>" />
+    <% end %>
     <h3 id="tr<%= word.id %>"> <%= word.in_polish %> </h3>
   </div>
 

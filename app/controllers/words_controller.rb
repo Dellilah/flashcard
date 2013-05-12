@@ -68,13 +68,21 @@ class WordsController < ApplicationController
 
     respond_to do |format|
       if @word.update_attributes(params[:word])
-        format.html { redirect_to @word, notice: 'Word was successfully saved.' }
+        if (!params[:word] || params[:word][:remote_image_url] || params[:word][:image])
+          format.html { redirect_to @word, notice: 'Word successfully saved' }
+        else
+          format.html { redirect_to set_image_path(@word) }
+        end
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
         format.json { render json: @word.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def set_image
+    @word = context.find(params[:id])
   end
 
   # DELETE /words/1

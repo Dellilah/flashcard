@@ -8,6 +8,7 @@
       <%= f.label :in_english %><br />
       <%= f.select(:in_english, @translations.map { |value| [ value, value ] }) %>
     </div>
+
     <div class="actions">
       <%= f.submit 'Save', :class => 'btn btn-primary' %>
     </div>
@@ -22,10 +23,12 @@
       <%= f.label :in_polish %><br />
       <%= f.select(:in_polish, @translations.map { |value| [ value, value ] }) %>
     </div>
+
     <div class="actions">
       <%= f.submit 'Save', :class => 'btn btn-primary' %>
     </div>
   <% end %>
+
 <% end %>
 
 <%= button_to('Cancel', @word, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger') %>

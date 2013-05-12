@@ -7,6 +7,7 @@ Flashcard::Application.routes.draw do
   match 'words/:id/set_translation', to: 'Words#set_translation', :as => :set_translation
   match 'words/:id/from_pl/set_translation', to: 'Words#set_english_translation', :as => :set_english_translation
   match 'words/:id/from_en/set_translation', to: 'Words#set_polish_translation', :as => :set_polish_translation
+  match 'words/:id/set_image', to: 'Words#set_image', :as => :set_image
 
 
   root :to => 'Home#index'

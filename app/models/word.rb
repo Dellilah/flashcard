@@ -1,6 +1,8 @@
 class Word < ActiveRecord::Base
-  attr_accessible :in_english, :in_polish
+  attr_accessible :in_english, :in_polish, :image, :remote_image_url
   belongs_to :user
+
+  mount_uploader :image, ImageUploader
 
   def polish?
     in_polish.present? && in_english.blank?
@@ -12,6 +14,16 @@ class Word < ActiveRecord::Base
 
   def needs_translation?
     polish? || english?
+  end
+
+  def images_from_google
+    begin
+      timeout(4) do
+        @images ||= Google::Search::Image.new(:query => in_english).take(6).map(&:thumbnail_uri)
+      end
+    rescue OpenURI::HTTPError, SocketError, TimeoutError
+      []
+    end
   end
 
   def as_json(*)

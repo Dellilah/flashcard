@@ -1,0 +1,38 @@
+<% if @word.image_url.present? %>
+  <h2>Current image:</h2>
+  <img src="<%= @word.image_url %>" />
+  <p class="leave-it-button">
+    <%= link_to 'Leave it', @word, :class => 'btn btn-primary' %>
+  </p>
+<% end %>
+
+<h2>Choose one from following images...</h2>
+<% if @word.images_from_google.count > 0 %>
+  <% @word.images_from_google.each do |image|  %>
+    <a href="#" class="image"><img src="<%= image %>" /></a>
+  <% end %>
+<% else %>
+  <h3>No images found, try again or upload your own</h3>
+<% end %>
+
+<%= form_for @word, :html => {:multipart => true} do |f| %>
+  <p>
+    <%= f.hidden_field :remote_image_url %>
+  </p>
+<% end %>
+
+<h2>... Or upload your own:</h2>
+
+<%= form_for @word, :html => {:multipart => true} do |f| %>
+  <p>
+    <%= f.file_field :image %>
+    <%= f.submit 'Upload', :class => 'btn btn-primary' %>
+  </p>
+<% end %>
+
+<script>
+$("img").click(function() {
+  $("#word_remote_image_url").val(this.src);
+  $(".edit_word").submit();
+})
+</script>

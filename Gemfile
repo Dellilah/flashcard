@@ -5,6 +5,9 @@ gem 'jquery-rails', '2.0.2'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'omniauth-facebook', '1.4.1'
 gem 'json', '1.7.7'
+gem 'carrierwave', '0.8.0'
+gem 'rmagick'
+gem "google-search", "~> 1.0.3"
 gem 'api', :path => './engines/api'
 
 group :development, :test do
