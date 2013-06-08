@@ -26,6 +26,7 @@ public class Service {
 
         LoginDTO loginDTO = null;
         String url = Settings.getHost() + "/api/login.json";
+        System.out.println(url);
         Content s = Request.Post(url)
                 .bodyForm(
                         Form.form()
@@ -46,6 +47,23 @@ public class Service {
         Settings.setPassword(password);
         Settings.writeSettings();
         return true;
+    }
+
+    //nie wiem, czy ta metoda jest dobrze napisana :/
+    public static void editWord(Integer id, String inEnglish, String inPolish) throws Exception {
+        try {
+            String url = Settings.getHost() + "api/words/" + id + ".json?api_token=" + Settings.getToken();
+            Content s = Request.Put(url)
+                    .bodyForm(
+                            Form.form()
+                                    .add("in_english", inEnglish)
+                                    .add("in_polish", inPolish)
+                                    .build()
+                    ).execute().returnContent();
+            System.out.println(s.asString());
+        } catch (IOException e) {
+            throw new Exception("Cannot edit word");
+        }
     }
 
     public static List<String> getTranslation(Language fromLanguage, String word) throws Exception {

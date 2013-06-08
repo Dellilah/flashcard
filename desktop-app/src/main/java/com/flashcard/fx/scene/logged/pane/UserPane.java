@@ -25,6 +25,7 @@ public class UserPane extends VBox {
     private ToggleButton translateButton;
     private ToggleButton addWordButton;
     private ToggleButton wordListButton;
+    private ToggleButton editWordButton;
 
     public UserPane() {
         init();
@@ -36,6 +37,7 @@ public class UserPane extends VBox {
         translateButton = new ToggleButton("Translate");
         addWordButton = new ToggleButton("Add Word");
         wordListButton = new ToggleButton("Word List");
+        editWordButton = new ToggleButton("Edit");
 
         ToggleGroup group = new ToggleGroup();
         translateButton.setSelected(true);
@@ -44,7 +46,9 @@ public class UserPane extends VBox {
         addWordButton.setToggleGroup(group);
         addWordButton.getStyleClass().add("button");
         wordListButton.setToggleGroup(group);
-        wordListButton.getStyleClass().add("button-last");
+        wordListButton.getStyleClass().add("button");
+        editWordButton.setToggleGroup(group);
+        editWordButton.getStyleClass().add("button-last");
 
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) {
@@ -52,8 +56,10 @@ public class UserPane extends VBox {
                     UserPane.this.setContent(TranslationPane.getInstance());
                 } else if (new_toggle == wordListButton) {
                     UserPane.this.setContent(WordListPane.getInstance());
-                } else {
+                } else if (new_toggle == addWordButton) {
                     UserPane.this.setContent(AddNewWordPane.getInstance());
+                } else {
+                    UserPane.this.setContent(EditPane.getInstance());
                 }
 //                    if (new_toggle == null)
 //                        rect.setFill(Color.WHITE);
@@ -76,7 +82,7 @@ public class UserPane extends VBox {
         buttonsBox.setSpacing(0);
         buttonsBox.getStyleClass().add("button-row");
         buttonsBox.setAlignment(Pos.BASELINE_LEFT);
-        buttonsBox.getChildren().addAll(translateButton, addWordButton, wordListButton);
+        buttonsBox.getChildren().addAll(translateButton, addWordButton, wordListButton,editWordButton);
         toolBar.getItems().addAll(buttonsBox, textBox);
         toolBar.setMaxWidth(Double.MAX_VALUE);
 

@@ -34,6 +34,7 @@ public class WordListPane extends VBox {
         setAlignment(Pos.CENTER);
         //setHgap(10);
         //setVgap(10);
+        setMinWidth(850);
         setMaxWidth(Double.MAX_VALUE);
         setPadding(new Insets(25, 25, 25, 25));
 
@@ -43,9 +44,10 @@ public class WordListPane extends VBox {
 
         wordList = new TableView<WordDTO>();
 
-        TableColumn<WordDTO, Integer> action = new TableColumn<WordDTO, Integer>("Action");
-        action.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
-        action.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
+        TableColumn<WordDTO, Integer> removeButton = new TableColumn<WordDTO, Integer>("Action");
+        removeButton.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
+
+        removeButton.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
             @Override
             public TableCell<WordDTO, Integer> call(TableColumn<WordDTO, Integer> tableColumn) {
                 TableCell cell = new TableCell<WordDTO, Integer>() {
@@ -85,7 +87,37 @@ public class WordListPane extends VBox {
         createDate.setCellValueFactory(new PropertyValueFactory<WordDTO, String>("created_at"));
 
         TableColumn updateDate = new TableColumn("Updated");
-        createDate.setCellValueFactory((new PropertyValueFactory<WordDTO, String>("updated_at")));
+        updateDate.setCellValueFactory((new PropertyValueFactory<WordDTO, String>("updated_at")));
+
+        TableColumn<WordDTO, Integer> editWordButton = new TableColumn<WordDTO, Integer>("Edit");
+        editWordButton.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
+
+        editWordButton.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
+            @Override
+            public TableCell<WordDTO, Integer> call(TableColumn<WordDTO, Integer> wordDTOIntegerTableColumn) {
+                TableCell cell = new TableCell<WordDTO, Integer>(){
+
+                    @Override
+                    public void updateItem(final Integer item, boolean empty){
+                        super.updateItem(item, empty);
+                        if(!empty){
+                            final  Button btnEDT = new Button("Edit");
+                            btnEDT.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    System.out.println("kliknięto");
+                                }
+                            });
+                            setGraphic(btnEDT);
+                            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                        }
+                    }
+                };
+                return cell;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+
+
 
         try {
             List<WordDTO> dataList = Service.wordsIndex();
@@ -97,7 +129,7 @@ public class WordListPane extends VBox {
         }
 
 
-        wordList.getColumns().addAll(action, polishWord, englishWord, createDate, updateDate);
+        wordList.getColumns().addAll(removeButton, polishWord, englishWord, createDate, updateDate, editWordButton);
 
         wordList.setMaxWidth(Double.MAX_VALUE);
         wordList.setMinWidth(600);
