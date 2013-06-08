@@ -53,7 +53,7 @@ public class UserPane extends VBox {
                 } else if (new_toggle == wordListButton) {
                     UserPane.this.setContent(WordListPane.getInstance());
                 } else {
-                    UserPane.this.setContent(new HBox());
+                    UserPane.this.setContent(AddNewWordPane.getInstance());
                 }
 //                    if (new_toggle == null)
 //                        rect.setFill(Color.WHITE);
