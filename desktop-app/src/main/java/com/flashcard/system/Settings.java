@@ -29,7 +29,7 @@ public class Settings {
         put(Property.login, "");
         put(Property.password, "");
         put(Property.token, "");
-        put(Property.host, "http://localhost:3000");
+        put(Property.host, "http://flash-cargit d.herokuapp.com");
         put(Property.alwaysOnTop, "true");
     }};
     private static Properties properties;
@@ -44,6 +44,7 @@ public class Settings {
             for (String s : Property.values()) {
                 if (properties.get(s) == null || ((String) properties.get(s)).isEmpty())
                     properties.put(s, defaults.get(s));
+                System.out.println(properties.get(s));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //TODO: implement body of catch statement.
