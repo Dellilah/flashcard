@@ -20,7 +20,7 @@ import javafx.scene.text.Text;
  * Time: 13:33
  */
 public class UserPane extends VBox {
-
+    private static UserPane instance;
     private HBox container;
     private ToggleButton translateButton;
     private ToggleButton addWordButton;
@@ -34,6 +34,11 @@ public class UserPane extends VBox {
     public UserPane(Integer id){
         init();
         setEditPane(id);
+    }
+
+    public UserPane(String message){
+        init();
+        setMessagePane(message);
     }
 
     private void init() {
@@ -106,10 +111,23 @@ public class UserPane extends VBox {
         container.getChildren().add(EditPane.getInstance(id));
     }
 
+    private void setMessagePane(String message){
+        translateButton.setSelected(false);
+
+        container.getChildren().clear();
+        container.getChildren().add(MessagePane.getInstance(message));
+    }
+
     public void setContent(Parent content) {
         container.getChildren().removeAll(container.getChildren());
         container.getChildren().add(content);
         HBox.setHgrow(content, Priority.ALWAYS);
         App.getInstance().getPrimaryStage().sizeToScene();
+    }
+
+    public static UserPane getInstance(Integer id) {
+        if (instance == null)
+            instance = new UserPane(id);
+        return instance;
     }
 }

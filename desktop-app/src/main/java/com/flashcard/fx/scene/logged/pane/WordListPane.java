@@ -118,7 +118,7 @@ public class WordListPane extends VBox {
                         }
                     }
                 };
-                return cell;  //To change body of implemented methods use File | Settings | File Templates.
+                return cell;
             }
         });
 

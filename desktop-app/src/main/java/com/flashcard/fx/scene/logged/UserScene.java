@@ -18,4 +18,8 @@ public class UserScene extends Scene {
         super(new UserPane(id));
         getStylesheets().add("main.css");
     }
+
+    public UserScene(String message){
+        super(new UserPane(message));
+    }
 }

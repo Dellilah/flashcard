@@ -49,20 +49,67 @@ public class Service {
         return true;
     }
 
+    public static void deleteWord(Integer id) throws Exception {
+        try {
+            String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
+            Content s = Request.Delete(uri).execute().returnContent();
+            System.out.println(s.asString());
+            System.out.println(s.asString());
+        } catch (IOException e) {
+            throw new Exception("Cannot delete word");
+        }
+    }
+
+    public static void addNewWord(String englishWord, String polishWord) throws Exception {
+        try {
+            String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
+            Content s = Request.Post(uri)
+                    .bodyForm(
+                            Form.form()
+                                    .add("in_english", englishWord)
+                                    .add("in_polish", polishWord)
+                                    .build()//,
+                            //new UTF_32()
+                    ).execute().returnContent();
+        } catch (IOException e) {
+            System.out.println("IT'S HEEEEERE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     //nie wiem, czy ta metoda jest dobrze napisana :/
     public static void editWord(Integer id, String inEnglish, String inPolish) throws Exception {
         try {
-            String url = Settings.getHost() + "api/words/" + id + ".json?api_token=" + Settings.getToken();
-            Content s = Request.Put(url)
+            String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
+            Content s = Request.Put(uri)
                     .bodyForm(
                             Form.form()
                                     .add("in_english", inEnglish)
                                     .add("in_polish", inPolish)
                                     .build()
                     ).execute().returnContent();
-            System.out.println(s.asString());
+            //System.out.println(s.asString());
         } catch (IOException e) {
             throw new Exception("Cannot edit word");
+        }
+    }
+
+    //FUNKCJA NIEPRZETESTOWANA!
+    public static WordDTO getWord(Integer id) throws Exception{
+        try{
+            System.out.println(0);
+            String url = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
+            System.out.println(1);
+            Content s = Request.Get(url).execute().returnContent();
+            System.out.println(2);
+            Gson gson = new Gson();
+            System.out.println(3);
+            WordDTO result = gson.fromJson(s.asString(), WordDTO.class);
+            System.out.println(4);
+            return result;
+        } catch (IOException e){
+            throw new Exception("Cannot get word");
         }
     }
 
@@ -90,35 +137,6 @@ public class Service {
             return Arrays.asList(result);
         } catch (IOException e) {
             throw new Exception("Cannot get words");
-        }
-    }
-
-    public static void addNewWord(String englishWord, String polishWord) throws Exception {
-        try {
-            String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
-            Content s = Request.Post(uri)
-                    .bodyForm(
-                            Form.form()
-                                    .add("in_english", englishWord)
-                                    .add("in_polish", polishWord)
-                                    .build()//,
-                            //new UTF_32()
-                    ).execute().returnContent();
-        } catch (IOException e) {
-            System.out.println("IT'S HEEEEERE");
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public static void deleteWord(Integer id) throws Exception {
-        try {
-            String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
-            Content s = Request.Delete(uri).execute().returnContent();
-            System.out.println(s.asString());
-            System.out.println(s.asString());
-        } catch (IOException e) {
-            throw new Exception("Cannot delete word");
         }
     }
 }
