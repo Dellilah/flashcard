@@ -1,6 +1,8 @@
 package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.dto.WordDTO;
+import com.flashcard.fx.App;
+import com.flashcard.fx.scene.logged.UserScene;
 import com.flashcard.system.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -99,12 +101,15 @@ public class WordListPane extends VBox {
 
                     @Override
                     public void updateItem(final Integer item, boolean empty){
-                        super.updateItem(item, empty);
+                        super.updateItem(item, empty); //czy to powinno tu być? co to robi?
+
+                        //System.out.println(item.toString());
                         if(!empty){
                             final  Button btnEDT = new Button("Edit");
                             btnEDT.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
+                                    App.getInstance().setScene(new UserScene(item));
                                     System.out.println("kliknięto");
                                 }
                             });

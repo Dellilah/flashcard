@@ -13,4 +13,9 @@ public class UserScene extends Scene {
         super(new UserPane());
         getStylesheets().add("main.css");
     }
+
+    public UserScene(Integer id) {
+        super(new UserPane(id));
+        getStylesheets().add("main.css");
+    }
 }

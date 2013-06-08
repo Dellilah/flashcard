@@ -23,13 +23,16 @@ public class EditPane extends GridPane {
     private final TextField englishWordField;
     private final TextField polishWordField;
     private final Button editButton;
+    private final Integer id;
 
-    public EditPane(){setAlignment(Pos.CENTER);
+    public EditPane(Integer id_){
+        setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);
         setPadding(new Insets(25, 25, 25, 25));
-        setAlignment(Pos.CENTER);
         setHgap(10);
         setVgap(10);
+
+        this.id=id_;
 
         Text sceneTitle = new Text("Wordlist");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -60,7 +63,7 @@ public class EditPane extends GridPane {
 
                 try {
                     System.out.println("kliknięto editnięto");
-                    Service.editWord(22, englishWord, polishWord);//zamienić 22 na ID zmienianego słowa
+                    Service.editWord(id, englishWord, polishWord);
                     //Service.addNewWord(englishWord, polishWord);
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -73,9 +76,9 @@ public class EditPane extends GridPane {
         add(editButton, 0, 7, 2, 1);
     }
 
-    public static EditPane getInstance() {
+    public static EditPane getInstance(Integer id) {
         if (instance == null)
-            instance = new EditPane();
+            instance = new EditPane(id);
         return instance;
     }
 }
