@@ -92,7 +92,6 @@ public class WordListPane extends VBox {
             ObservableList<WordDTO> tableData = FXCollections.observableArrayList(dataList);
 
             wordList.setItems(tableData);
-
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -100,6 +99,8 @@ public class WordListPane extends VBox {
 
         wordList.getColumns().addAll(action, polishWord, englishWord, createDate, updateDate);
 
+        wordList.setMaxWidth(Double.MAX_VALUE);
+        wordList.setMinWidth(600);
         HBox tableBox = new HBox();
         tableBox.setAlignment(Pos.BOTTOM_RIGHT);
         tableBox.getChildren().addAll(sceneTitle, wordList);
