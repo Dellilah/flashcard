@@ -48,6 +48,7 @@ public class EditPane extends GridPane {
 
         try {
             WordDTO word = Service.getWord(id_);
+            System.out.println(id_ + " " + word.getIn_polish());
 
             Text polishTitle = new Text("Word in Polish");
             polishTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 14));
@@ -92,7 +93,7 @@ public class EditPane extends GridPane {
     }
 
     public static EditPane getInstance(Integer id) {
-        if (instance == null)
+        //if (instance == null)
             instance = new EditPane(id);
         return instance;
     }

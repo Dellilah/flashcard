@@ -148,7 +148,7 @@ public class WordListPane extends VBox {
     }
 
     public static WordListPane getInstance() {
-        if (instance == null)
+        //if (instance == null)
             instance = new WordListPane();
         return instance;
     }

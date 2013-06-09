@@ -9,6 +9,7 @@ import org.apache.http.client.fluent.Request;
 import sun.nio.cs.UTF_32;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,7 +89,7 @@ public class Service {
                                     .add("in_english", inEnglish)
                                     .add("in_polish", inPolish)
                                     .build()
-                    ).execute().returnContent();
+                            , Charset.defaultCharset()).execute().returnContent();
             //System.out.println(s.asString());
         } catch (IOException e) {
             throw new Exception("Cannot edit word");
