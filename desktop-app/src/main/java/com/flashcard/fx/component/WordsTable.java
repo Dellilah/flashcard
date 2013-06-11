@@ -61,7 +61,7 @@ public class WordsTable extends TableView<WordDTO> {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     App.getInstance().setScene(new UserScene(item));
-                                    System.out.println("kliknięto");
+                                    System.out.println("kliknieto");
                                 }
                             });
                             setGraphic(btnEDT);
@@ -125,7 +125,7 @@ public class WordsTable extends TableView<WordDTO> {
 
                     @Override
                     public void updateItem(final Integer item, boolean empty){
-                        super.updateItem(item, empty); //czy to powinno tu być? co to robi?
+                        super.updateItem(item, empty);
 
                         //System.out.println(item.toString());
                         if(!empty){
@@ -134,7 +134,7 @@ public class WordsTable extends TableView<WordDTO> {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     App.getInstance().setScene(new UserScene(item));
-                                    System.out.println("kliknięto");
+                                    System.out.println("kliknieto");
                                 }
                             });
                             setGraphic(btnEDT);

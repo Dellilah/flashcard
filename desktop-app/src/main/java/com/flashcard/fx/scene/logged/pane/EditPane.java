@@ -74,7 +74,7 @@ public class EditPane extends GridPane {
                     String polishWord = polishWordField.getText();
 
                     try {
-                        System.out.println("kliknięto editnięto");
+                        System.out.println("kliknieto editnieto");
                         Service.editWord(id, englishWord, polishWord);
                         App.getInstance().setScene(new UserScene("The word has been edited."));
                     } catch (Exception e1) {
