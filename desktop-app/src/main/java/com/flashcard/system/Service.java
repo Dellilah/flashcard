@@ -6,49 +6,54 @@ import com.google.gson.Gson;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
-import sun.nio.cs.UTF_32;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * User: ghaxx
  * Date: 26/04/2013
  * Time: 11:25
  */
+@org.springframework.stereotype.Service
 public class Service {
+    private static Service instance = null;
+
     public enum Language {
         en, pl
     }
 
-    public static boolean signIn(String email, String password) throws Exception {
+    public boolean signIn(String email, String password) throws Exception {
 
-        LoginDTO loginDTO = null;
-        String url = Settings.getHost() + "/api/login.json";
-        Content s = Request.Post(url)
-                .bodyForm(
-                        Form.form()
-                                .add("email", email)
-                                .add("password", password)
-                                .build()
-                ).execute().returnContent();
-        System.out.println(s.asString());
-        Gson gson = new Gson();
-        loginDTO = gson.fromJson(s.asString(), LoginDTO.class);
-        System.out.println(loginDTO.getApi_token());
-        if (loginDTO.getMessage() != null || loginDTO.getApi_token() == null) {
-            loginDTO = new LoginDTO();
-            loginDTO.setApi_token("1");
+        try {
+            String url = Settings.getHost() + "/api/login.json";
+            Content s = Request.Post(url)
+                    .bodyForm(
+                            Form.form()
+                                    .add("email", email)
+                                    .add("password", password)
+                                    .build()
+                    ).execute().returnContent();
+            System.out.println(s.asString());
+            Gson gson = new Gson();
+            LoginDTO loginDTO = gson.fromJson(s.asString(), LoginDTO.class);
+            System.out.println(loginDTO.getApi_token());
+            if (loginDTO.getMessage() != null || loginDTO.getApi_token() == null) {
+                loginDTO = new LoginDTO();
+                loginDTO.setApi_token("1");
+            }
+            Settings.setToken(loginDTO.getApi_token());
+            Settings.setLogin(email);
+            Settings.setPassword(password);
+            Settings.writeSettings();
+            return true;
+        } catch (UnknownHostException e) {
+            throw new Exception("Cannot connect with server: " + e.getMessage());
         }
-        Settings.setToken(loginDTO.getApi_token());
-        Settings.setLogin(email);
-        Settings.setPassword(password);
-        Settings.writeSettings();
-        return true;
     }
 
-    public static List<String> getTranslation(Language fromLanguage, String word) throws Exception {
+    public List<String> getTranslation(Language fromLanguage, String word) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words/from_" + fromLanguage.name() + "/" + word + ".json?api_token=" + Settings.getToken();
             Content s = Request.Get(uri).execute().returnContent();
@@ -61,7 +66,7 @@ public class Service {
         }
     }
 
-    public static List<WordDTO> wordsIndex() throws Exception {
+    public List<WordDTO> wordsIndex() throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
             Content s = Request.Get(uri).execute().returnContent();
@@ -75,10 +80,10 @@ public class Service {
         }
     }
 
-    public static void addNewWord(String englishWord, String polishWord) throws Exception {
+    public void addNewWord(String englishWord, String polishWord) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
-            Content s = Request.Post(uri)
+            Request.Post(uri)
                     .bodyForm(
                             Form.form()
                                     .add("in_english", englishWord)
@@ -93,7 +98,7 @@ public class Service {
         }
     }
 
-    public static void deleteWord(Integer id) throws Exception {
+    public void deleteWord(Integer id) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
             Content s = Request.Delete(uri).execute().returnContent();
@@ -102,5 +107,11 @@ public class Service {
         } catch (IOException e) {
             throw new Exception("Cannot delete word");
         }
+    }
+
+    public static Service getInstance() {
+        if (instance == null)
+            instance = new Service();
+        return instance;
     }
 }

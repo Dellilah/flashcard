@@ -52,6 +52,10 @@ public class WordDTO {
         this.updated_at = updated_at;
     }
 
+    public String getImageAddress() {
+        return "https://piotrplaneta.s3.amazonaws.com/flashcard/word/image/14/images";
+    }
+
     @Override
     public String toString() {
         return "WordDTO{" +

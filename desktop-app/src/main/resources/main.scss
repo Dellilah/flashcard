@@ -24,3 +24,21 @@
     -fx-background-radius: 0 5 5 0;
   }
 }
+.plain-menuBar {
+  -fx-background-color: transparent;
+  -fx-end-margin: 0;
+  -fx-start-margin: 0;
+  .menu {
+    .label {
+      -fx-text-fill: black;
+    }
+    &:pressed,
+    &:focused,
+    &:hover {
+      -fx-background-color: rgba(0, 0, 0, 0.4);
+      .label {
+        -fx-text-fill: white;
+      }
+    }
+  }
+}
