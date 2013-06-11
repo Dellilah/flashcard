@@ -1,5 +1,7 @@
 package com.flashcard.fx.scene.logged.pane;
 
+import com.flashcard.fx.App;
+import com.flashcard.fx.scene.logged.UserScene;
 import com.flashcard.system.Service;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,12 +25,22 @@ import javafx.scene.text.Text;
 public class AddNewWordPane extends GridPane{
     private static AddNewWordPane instance;
     //private final VBox resultsBox;
-    private final TextField englishWordField;
-    private final TextField polishWordField;
-    private final Button addButton;
+    private final TextField englishWordField = new TextField();
+    private final TextField polishWordField = new TextField();
+    private final Button addButton = new Button("Add");
     private Service service = Service.getInstance();
 
     public AddNewWordPane(){
+        init();
+    }
+
+    public AddNewWordPane(String wordPolish, String wordEnglish){
+        init();
+        englishWordField.setText(wordEnglish);
+        polishWordField.setText(wordPolish);
+    }
+
+    public void init(){
         setAlignment(Pos.CENTER);
         setHgap(10);
         setVgap(10);
@@ -42,7 +54,6 @@ public class AddNewWordPane extends GridPane{
         polishTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 14));
         add(polishTitle, 0, 1, 2, 1);
 
-        polishWordField = new TextField();
         polishWordField.setMaxWidth(Double.MAX_VALUE);
         add(polishWordField, 0, 2, 2, 2);
 
@@ -50,11 +61,9 @@ public class AddNewWordPane extends GridPane{
         englishTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 14));
         add(englishTitle, 0, 4, 2, 1);
 
-        englishWordField = new TextField();
         englishWordField.setMaxWidth(Double.MAX_VALUE);
         add(englishWordField, 0, 5, 2, 2);
 
-        addButton = new Button("Add");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent keyEvent) {
@@ -63,6 +72,7 @@ public class AddNewWordPane extends GridPane{
 
                 try {
                     service.addNewWord(englishWord, polishWord);
+                    App.getInstance().setScene(new UserScene(new MessagePane("The word has been added.")));
                 } catch (Exception e1) {
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }

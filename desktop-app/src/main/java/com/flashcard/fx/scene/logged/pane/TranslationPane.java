@@ -2,6 +2,7 @@ package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.dto.WordDTO;
 import com.flashcard.fx.App;
+import com.flashcard.fx.scene.logged.UserScene;
 import com.flashcard.system.Service;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -127,7 +128,8 @@ public class TranslationPane extends GridPane {
                             }
 
                             try {
-                                service.addNewWord(englishWord, polishWord);
+                                //service.addNewWord(englishWord, polishWord);
+                                App.getInstance().setScene(new UserScene(new AddNewWordPane(polishWord, englishWord)));
                             } catch (Exception e1) {
                                 e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                             }

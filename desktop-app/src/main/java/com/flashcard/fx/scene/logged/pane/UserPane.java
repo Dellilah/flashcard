@@ -43,6 +43,9 @@ public class UserPane extends VBox {
 
     public UserPane(String message){
         init();
+        translateButton.setSelected(false);
+        addWordButton.setSelected(false);
+        wordListButton.setSelected(false);
         setMessagePane(message);
     }
 

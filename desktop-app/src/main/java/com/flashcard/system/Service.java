@@ -78,9 +78,8 @@ public class Service {
                             Form.form()
                                     .add("in_english", englishWord)
                                     .add("in_polish", polishWord)
-                                    .build()//,
-                            //new UTF_32()
-                    ).execute().returnContent();
+                                    .build()
+                            , Charset.defaultCharset()).execute().returnContent();
         } catch (IOException e) {
             System.out.println("IT'S HEEEEERE");
             System.out.println(e.getMessage());

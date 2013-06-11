@@ -2,6 +2,7 @@ package com.flashcard.fx.scene.logged;
 
 import com.flashcard.fx.scene.logged.pane.UserPane;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 
 /**
  * User: ghaxx
@@ -11,6 +12,11 @@ import javafx.scene.Scene;
 public class UserScene extends Scene {
     public UserScene() {
         super(new UserPane());
+        getStylesheets().add("main.css");
+    }
+
+    public UserScene(Pane pane){
+        super((new UserPane(pane)));
         getStylesheets().add("main.css");
     }
 
