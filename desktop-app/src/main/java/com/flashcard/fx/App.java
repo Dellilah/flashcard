@@ -4,6 +4,7 @@ import com.flashcard.fx.scene.signin.SignInScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * User: ghaxx
@@ -41,6 +42,12 @@ public class App extends Application {
         primaryStage.setTitle("Welcome to Flashcard");
         primaryStage.show();
 
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(com.flashcard.system.Service.class);
+        context.register(com.flashcard.fx.scene.signin.pane.SignInPane.class);
+        context.refresh();
+
         setScene(new SignInScene());
+        getPrimaryStage().sizeToScene();
     }
 }

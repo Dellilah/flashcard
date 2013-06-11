@@ -26,6 +26,7 @@ public class AddNewWordPane extends GridPane{
     private final TextField englishWordField;
     private final TextField polishWordField;
     private final Button addButton;
+    private Service service = Service.getInstance();
 
     public AddNewWordPane(){
         setAlignment(Pos.CENTER);
@@ -61,7 +62,7 @@ public class AddNewWordPane extends GridPane{
                 String polishWord = polishWordField.getText();
 
                 try {
-                    Service.addNewWord(englishWord, polishWord);
+                    service.addNewWord(englishWord, polishWord);
                 } catch (Exception e1) {
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }

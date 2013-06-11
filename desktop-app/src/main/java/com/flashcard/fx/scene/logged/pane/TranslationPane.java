@@ -22,7 +22,6 @@ import javafx.scene.text.Text;
 import java.util.List;
 
 /**
- * User: ghaxx
  * Date: 26/04/2013
  * Time: 10:57
  */
@@ -31,6 +30,8 @@ public class TranslationPane extends GridPane {
     private static TranslationPane instance;
     private final VBox resultsBox;
     private final TextField wordTextField;
+
+    private Service service = Service.getInstance();
 
     private TranslationPane() {
         setAlignment(Pos.CENTER);
@@ -73,7 +74,7 @@ public class TranslationPane extends GridPane {
         toEnglishButton.setOnAction(new Translate(Service.Language.pl));
         toPolishButton.setOnAction(new Translate(Service.Language.en));
         try {
-            List<WordDTO> list = Service.wordsIndex();
+            List<WordDTO> list = service.wordsIndex();
             for (WordDTO wordDTO : list) {
                 System.out.println(wordDTO.toString());
             }
@@ -106,7 +107,7 @@ public class TranslationPane extends GridPane {
             resultsBox.getChildren().removeAll(resultsBox.getChildren());
             try {
                 final String wordToBeTranslated = wordTextField.getText();
-                List<String> resultList = Service.getTranslation(from, wordToBeTranslated);
+                List<String> resultList = service.getTranslation(from, wordToBeTranslated);
                 for (String s : resultList) {
                     final String ss = s;
                     Text text = new Text(s);
@@ -126,7 +127,7 @@ public class TranslationPane extends GridPane {
                             }
 
                             try {
-                                Service.addNewWord(englishWord, polishWord);
+                                service.addNewWord(englishWord, polishWord);
                             } catch (Exception e1) {
                                 e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                             }
@@ -136,7 +137,7 @@ public class TranslationPane extends GridPane {
                     box.getChildren().add(text);
                     resultsBox.getChildren().add(box);
                 }
-            } catch (Exception e1) {
+            } catch (Exception ignored) {
 
             }
             App.getInstance().getPrimaryStage().sizeToScene();

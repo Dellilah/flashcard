@@ -1,16 +1,16 @@
 package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.fx.App;
+import com.flashcard.fx.scene.signin.SignInScene;
 import com.flashcard.system.Settings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
@@ -77,12 +77,25 @@ public class UserPane extends VBox {
 //                        );
             }
         });
+        MenuBar menuBar = new MenuBar();
 
+        // --- Menu File
+        Menu menuUser = new Menu("Hello, " + Settings.getLogin());
+        menuUser.getStyleClass().add("plain-menu");
+        MenuItem add = new MenuItem("Log out");
+        add.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                App.getInstance().setScene(new SignInScene());
+            }
+        });
+        menuUser.getItems().addAll(add);
+        menuBar.getMenus().addAll(menuUser);
+        menuBar.getStyleClass().add("plain-menuBar");
         Text text = new Text("Hello, " + Settings.getLogin());
         HBox textBox = new HBox();
         textBox.setPadding(new Insets(0, 0, 0, 20));
         HBox.setHgrow(textBox, Priority.ALWAYS);
-        textBox.getChildren().add(text);
+        textBox.getChildren().add(menuBar);
         textBox.setAlignment(Pos.CENTER_RIGHT);
         textBox.setMaxWidth(Double.MAX_VALUE);
 
