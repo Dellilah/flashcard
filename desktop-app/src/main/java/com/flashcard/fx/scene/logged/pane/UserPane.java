@@ -36,6 +36,11 @@ public class UserPane extends VBox {
         setEditPane(id);
     }
 
+    public UserPane(Pane pane) {
+        init();
+        setContent(pane);
+    }
+
     public UserPane(String message){
         init();
         setMessagePane(message);

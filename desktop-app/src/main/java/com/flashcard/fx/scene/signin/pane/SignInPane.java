@@ -18,7 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Date: 26/04/2013
@@ -30,7 +29,6 @@ public class SignInPane extends GridPane {
     private final PasswordField passwordField;
     private final Text message;
 
-    @Autowired
     private Service service = Service.getInstance();
 
     public SignInPane() {

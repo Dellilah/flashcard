@@ -1,6 +1,10 @@
 package com.flashcard.fx.component;
 
 import com.flashcard.dto.WordDTO;
+import com.flashcard.fx.App;
+import com.flashcard.fx.scene.WordListScene;
+import com.flashcard.fx.scene.logged.UserScene;
+import com.flashcard.fx.scene.logged.pane.WordListPane;
 import com.flashcard.system.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +14,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 import org.apache.http.client.fluent.Request;
 
@@ -17,7 +25,6 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * User: ghaxx
  * Date: 11/06/13
  * Time: 09:09
  */
@@ -36,19 +43,32 @@ public class WordsTable extends TableView<WordDTO> {
                     public void updateItem(final Integer item, boolean empty) {
                         super.updateItem(item, empty);
                         if (!empty) {
-                            final Button btnPrint = new Button("Remove");
-                            btnPrint.setOnAction(new EventHandler<ActionEvent>() {
+                            final Button btnDelete = new Button("Remove");
+                            btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 
                                 @Override
                                 public void handle(ActionEvent event) {
                                     try {
                                         service.deleteWord(item);
+                                        refresh();
                                     } catch (Exception e) {
                                         System.out.println(e.getMessage());
                                     }
                                 }
                             });
-                            setGraphic(btnPrint);
+                            final  Button btnEDT = new Button("Edit");
+                            btnEDT.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    App.getInstance().setScene(new UserScene(item));
+                                    System.out.println("kliknięto");
+                                }
+                            });
+                            setGraphic(btnEDT);
+                            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                            HBox hBox = new HBox();
+                            hBox.getChildren().addAll(btnDelete, btnEDT);
+                            setGraphic(hBox);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                         }
                     }
@@ -95,7 +115,45 @@ public class WordsTable extends TableView<WordDTO> {
         TableColumn<WordDTO, String> updateDate = new TableColumn<>("Updated");
         updateDate.setCellValueFactory((new PropertyValueFactory<WordDTO, String>("updated_at")));
 
+        TableColumn<WordDTO, Integer> editWordButton = new TableColumn<WordDTO, Integer>("Edit");
+        editWordButton.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
+
+        editWordButton.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
+            @Override
+            public TableCell<WordDTO, Integer> call(TableColumn<WordDTO, Integer> wordDTOIntegerTableColumn) {
+                TableCell cell = new TableCell<WordDTO, Integer>(){
+
+                    @Override
+                    public void updateItem(final Integer item, boolean empty){
+                        super.updateItem(item, empty); //czy to powinno tu być? co to robi?
+
+                        //System.out.println(item.toString());
+                        if(!empty){
+                            final  Button btnEDT = new Button("Edit");
+                            btnEDT.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    App.getInstance().setScene(new UserScene(item));
+                                    System.out.println("kliknięto");
+                                }
+                            });
+                            setGraphic(btnEDT);
+                            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+
         getColumns().addAll(action, image, polishWord, englishWord, createDate, updateDate);
+
+        refresh();
+
+
+    }
+
+    private void refresh() {
         try {
             List<WordDTO> dataList = service.wordsIndex();
             ObservableList<WordDTO> tableData = FXCollections.observableArrayList(dataList);
@@ -103,7 +161,5 @@ public class WordsTable extends TableView<WordDTO> {
             setItems(tableData);
         } catch (Exception ignored) {
         }
-
-
     }
 }

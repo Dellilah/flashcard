@@ -6,48 +6,57 @@ import com.google.gson.Gson;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
-import sun.nio.cs.UTF_32;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * User: ghaxx
  * Date: 26/04/2013
  * Time: 11:25
  */
 public class Service {
+    private static Service instance = null;
+
+    public static Service getInstance() {
+        if (instance == null)
+            instance = new Service();
+        return instance;
+    }
+
     public enum Language {
         en, pl
     }
 
     public static boolean signIn(String email, String password) throws Exception {
 
-        LoginDTO loginDTO = null;
-        String url = Settings.getHost() + "/api/login.json";
-        System.out.println(url);
-        Content s = Request.Post(url)
-                .bodyForm(
-                        Form.form()
-                                .add("email", email)
-                                .add("password", password)
-                                .build()
-                ).execute().returnContent();
-        System.out.println(s.asString());
-        Gson gson = new Gson();
-        loginDTO = gson.fromJson(s.asString(), LoginDTO.class);
-        System.out.println(loginDTO.getApi_token());
-        if (loginDTO.getMessage() != null || loginDTO.getApi_token() == null) {
-            loginDTO = new LoginDTO();
-            loginDTO.setApi_token("1");
+        try {
+            String url = Settings.getHost() + "/api/login.json";
+            Content s = Request.Post(url)
+                    .bodyForm(
+                            Form.form()
+                                    .add("email", email)
+                                    .add("password", password)
+                                    .build()
+                    ).execute().returnContent();
+            System.out.println(s.asString());
+            Gson gson = new Gson();
+            LoginDTO loginDTO = gson.fromJson(s.asString(), LoginDTO.class);
+            System.out.println(loginDTO.getApi_token());
+            if (loginDTO.getMessage() != null || loginDTO.getApi_token() == null) {
+                loginDTO = new LoginDTO();
+                loginDTO.setApi_token("1");
+            }
+            Settings.setToken(loginDTO.getApi_token());
+            Settings.setLogin(email);
+            Settings.setPassword(password);
+            Settings.writeSettings();
+            return true;
+        } catch (UnknownHostException e) {
+            throw new Exception("Cannot connect with server: " + e.getMessage());
         }
-        Settings.setToken(loginDTO.getApi_token());
-        Settings.setLogin(email);
-        Settings.setPassword(password);
-        Settings.writeSettings();
-        return true;
     }
 
     public static void deleteWord(Integer id) throws Exception {
@@ -96,7 +105,6 @@ public class Service {
         }
     }
 
-    //FUNKCJA NIEPRZETESTOWANA!
     public static WordDTO getWord(Integer id) throws Exception{
         try{
             System.out.println(0);

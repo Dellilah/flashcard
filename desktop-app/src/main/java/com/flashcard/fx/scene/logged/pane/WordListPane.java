@@ -38,13 +38,13 @@ public class WordListPane extends VBox {
 
         wordList = new WordsTable();
         wordList.setMaxWidth(Double.MAX_VALUE);
-        wordList.setMinWidth(600);
+        wordList.setMinWidth(850);
         getChildren().add(wordList);
 
     }
 
     public static WordListPane getInstance() {
-        if (instance == null)
+        //if (instance == null)
             instance = new WordListPane();
         return instance;
     }
