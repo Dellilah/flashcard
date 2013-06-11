@@ -2,14 +2,21 @@ package com.flashcard.system;
 
 import com.flashcard.dto.LoginDTO;
 import com.flashcard.dto.WordDTO;
-import com.google.gson.Gson;
+import com.google.gson.*;
+import org.apache.http.HttpRequest;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -105,8 +112,8 @@ public class Service {
         }
     }
 
-    public static WordDTO getWord(Integer id) throws Exception{
-        try{
+    public static WordDTO getWord(Integer id) throws Exception {
+        try {
             System.out.println(0);
             String url = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
             System.out.println(1);
@@ -117,7 +124,7 @@ public class Service {
             WordDTO result = gson.fromJson(s.asString(), WordDTO.class);
             System.out.println(4);
             return result;
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new Exception("Cannot get word");
         }
     }
@@ -146,6 +153,32 @@ public class Service {
             return Arrays.asList(result);
         } catch (IOException e) {
             throw new Exception("Cannot get words");
+        }
+    }
+
+    public static List<String> getImages(String keyword, int limit) throws Exception {
+        //
+        try {
+            String uri = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + keyword + "&key=ABQIAAAAMDidA1PAO0alsihAElsy3xTLCrE5uk8Ud_JrDKiWLKYeT0PD8xQ9hbFvmXJ2enaXdFRHJflbRAe36A&userip=222.222.222.10";
+            Content s = Request.Get(uri).execute().returnContent();
+            System.out.println(s.asString());
+            Gson gson = new Gson();
+            System.out.println(s.asString());
+//            WordDTO[] result = gson.fromJson(s.asString(), String[].class);
+
+            List<String> result = new ArrayList<>(limit);
+            JsonElement jelement = new JsonParser().parse(s.asString());
+            JsonObject  jobject = jelement.getAsJsonObject();
+            jobject = jobject.getAsJsonObject("responseData");
+            JsonArray jarray = jobject.getAsJsonArray("results");
+            for (int i = 0; i <= limit && i < jarray.size(); i++) {
+                jobject = jarray.get(i).getAsJsonObject();
+                result.add(jobject.get("url").getAsString());
+            }
+
+            return result;
+        } catch (IOException e) {
+            throw new Exception("Cannot get image");
         }
     }
 }

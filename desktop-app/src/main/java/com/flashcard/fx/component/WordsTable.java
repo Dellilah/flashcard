@@ -44,6 +44,7 @@ public class WordsTable extends TableView<WordDTO> {
                         super.updateItem(item, empty);
                         if (!empty) {
                             final Button btnDelete = new Button("Remove");
+                            btnDelete.getStyleClass().add("button-first");
                             btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 
                                 @Override
@@ -57,6 +58,7 @@ public class WordsTable extends TableView<WordDTO> {
                                 }
                             });
                             final  Button btnEDT = new Button("Edit");
+                            btnEDT.getStyleClass().add("button-last");
                             btnEDT.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
@@ -67,6 +69,7 @@ public class WordsTable extends TableView<WordDTO> {
                             setGraphic(btnEDT);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                             HBox hBox = new HBox();
+                            hBox.getStyleClass().add("button-row");
                             hBox.getChildren().addAll(btnDelete, btnEDT);
                             setGraphic(hBox);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
