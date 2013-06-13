@@ -13,19 +13,30 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * User: ghaxx
  * Date: 27/04/2013
  * Time: 13:33
  */
+@Component
+@Scope("prototype")
 public class UserPane extends VBox {
     private static UserPane instance;
     private HBox container;
     private ToggleButton translateButton;
     private ToggleButton addWordButton;
     private ToggleButton wordListButton;
-//    private ToggleButton editWordButton;
+    @Autowired
+    private SignInScene signInScene;
+    @Autowired
+    private TranslationPane translationPane;
+    @Autowired
+    private WordListPane wordListPane;
+    //    private ToggleButton editWordButton;
 
     public UserPane() {
         init();
@@ -43,9 +54,6 @@ public class UserPane extends VBox {
 
     public UserPane(String message){
         init();
-        translateButton.setSelected(false);
-        addWordButton.setSelected(false);
-        wordListButton.setSelected(false);
         setMessagePane(message);
     }
 
@@ -64,16 +72,15 @@ public class UserPane extends VBox {
         addWordButton.setToggleGroup(group);
         addWordButton.getStyleClass().add("button");
         wordListButton.setToggleGroup(group);
-        wordListButton.getStyleClass().add("button");
-//        editWordButton.setToggleGroup(group);
-//        editWordButton.getStyleClass().add("button-last");
+        wordListButton.getStyleClass().add("button-last");
 
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) {
                 if (new_toggle == translateButton) {
-                    UserPane.this.setContent(TranslationPane.getInstance());
+                    UserPane.this.setContent(translationPane);
                 } else if (new_toggle == wordListButton) {
-                    UserPane.this.setContent(WordListPane.getInstance());
+                    wordListPane.refresh();
+                    UserPane.this.setContent(wordListPane);
                 } else /*if (new_toggle == addWordButton)*/ {
                     UserPane.this.setContent(AddNewWordPane.getInstance());
                 }
@@ -93,7 +100,7 @@ public class UserPane extends VBox {
         MenuItem add = new MenuItem("Log out");
         add.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                App.getInstance().setScene(new SignInScene());
+                App.getInstance().setScene(signInScene);
             }
         });
         menuUser.getItems().addAll(add);
@@ -122,18 +129,20 @@ public class UserPane extends VBox {
         getChildren().add(toolBar);
         getChildren().add(container);
 
-        container.getChildren().add(TranslationPane.getInstance());
+        container.getChildren().add(App.getInstanceContext().getBean(TranslationPane.class));
     }
 
-    private void setEditPane(Integer id){
+    public void setEditPane(Integer id){
         translateButton.setSelected(false);
 
         container.getChildren().clear();
         container.getChildren().add(EditPane.getInstance(id));
     }
 
-    private void setMessagePane(String message){
+    public void setMessagePane(String message){
         translateButton.setSelected(false);
+        addWordButton.setSelected(false);
+        wordListButton.setSelected(false);
 
         container.getChildren().clear();
         container.getChildren().add(MessagePane.getInstance(message));

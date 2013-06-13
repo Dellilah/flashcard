@@ -12,6 +12,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -24,20 +26,17 @@ import java.util.List;
  * Date: 26/04/2013
  * Time: 11:25
  */
+
+@Component
+@Scope("singleton")
 public class Service {
     private static Service instance = null;
-
-    public static Service getInstance() {
-        if (instance == null)
-            instance = new Service();
-        return instance;
-    }
 
     public enum Language {
         en, pl
     }
 
-    public static boolean signIn(String email, String password) throws Exception {
+    public boolean signIn(String email, String password) throws Exception {
 
         try {
             String url = Settings.getHost() + "/api/login.json";
@@ -66,7 +65,7 @@ public class Service {
         }
     }
 
-    public static void deleteWord(Integer id) throws Exception {
+    public void deleteWord(Integer id) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
             Content s = Request.Delete(uri).execute().returnContent();
@@ -77,7 +76,7 @@ public class Service {
         }
     }
 
-    public static void addNewWord(String englishWord, String polishWord) throws Exception {
+    public void addNewWord(String englishWord, String polishWord) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
             Content s = Request.Post(uri)
@@ -94,8 +93,7 @@ public class Service {
         }
     }
 
-    //nie wiem, czy ta metoda jest dobrze napisana :/
-    public static void editWord(Integer id, String inEnglish, String inPolish) throws Exception {
+    public void editWord(Integer id, String inEnglish, String inPolish) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
             Content s = Request.Put(uri)
@@ -111,7 +109,7 @@ public class Service {
         }
     }
 
-    public static WordDTO getWord(Integer id) throws Exception {
+    public WordDTO getWord(Integer id) throws Exception {
         try {
             System.out.println(0);
             String url = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
@@ -128,7 +126,7 @@ public class Service {
         }
     }
 
-    public static List<String> getTranslation(Language fromLanguage, String word) throws Exception {
+    public List<String> getTranslation(Language fromLanguage, String word) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words/from_" + fromLanguage.name() + "/" + word + ".json?api_token=" + Settings.getToken();
             Content s = Request.Get(uri).execute().returnContent();
@@ -141,7 +139,7 @@ public class Service {
         }
     }
 
-    public static List<WordDTO> wordsIndex() throws Exception {
+    public List<WordDTO> wordsIndex() throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
             Content s = Request.Get(uri).execute().returnContent();
@@ -149,21 +147,22 @@ public class Service {
             Gson gson = new Gson();
             System.out.println(s.asString());
             WordDTO[] result = gson.fromJson(s.asString(), WordDTO[].class);
+            try {
+                throw new Exception("testing");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return Arrays.asList(result);
         } catch (IOException e) {
             throw new Exception("Cannot get words");
         }
     }
 
-    public static List<String> getImages(String keyword, int limit) throws Exception {
-        //
+    public List<String> getImages(String keyword, int limit) throws Exception {
         try {
             String uri = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + keyword + "&key=ABQIAAAAMDidA1PAO0alsihAElsy3xTLCrE5uk8Ud_JrDKiWLKYeT0PD8xQ9hbFvmXJ2enaXdFRHJflbRAe36A&userip=222.222.222.10";
             Content s = Request.Get(uri).execute().returnContent();
             System.out.println(s.asString());
-            Gson gson = new Gson();
-            System.out.println(s.asString());
-//            WordDTO[] result = gson.fromJson(s.asString(), String[].class);
 
             List<String> result = new ArrayList<>(limit);
             JsonElement jelement = new JsonParser().parse(s.asString());
@@ -179,5 +178,11 @@ public class Service {
         } catch (IOException e) {
             throw new Exception("Cannot get image");
         }
+    }
+
+    public static Service getInstance() {
+        if (instance == null)
+            instance = new Service();
+        return instance;
     }
 }

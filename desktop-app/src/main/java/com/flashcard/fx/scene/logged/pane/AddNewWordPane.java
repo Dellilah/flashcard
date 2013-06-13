@@ -16,12 +16,16 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import javafx.scene.text.Text;
+import org.springframework.stereotype.Component;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ksiazelobozow
  * Date: 08.06.13
  * Time: 17:03
  */
+
+@Component
 public class AddNewWordPane extends GridPane{
     private static AddNewWordPane instance;
     //private final VBox resultsBox;

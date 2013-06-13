@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,12 +23,22 @@ import javafx.scene.text.Text;
  * Date: 08.06.13
  * Time: 19:14
  */
+@Component
 public class EditPane extends GridPane {
     private static EditPane instance;
     private final TextField englishWordField;
     private final TextField polishWordField;
     private final Button editButton;
     private final Integer id;
+
+    private Service service = Service.getInstance();
+
+    public EditPane() {
+        id = null;
+        englishWordField = null;
+        polishWordField = null;
+        editButton = null;
+    }
 
     public EditPane(Integer id_){
         setAlignment(Pos.CENTER);
@@ -47,7 +58,7 @@ public class EditPane extends GridPane {
         editButton = new Button("Edit");
 
         try {
-            WordDTO word = Service.getWord(id_);
+            WordDTO word = service.getWord(id_);
             System.out.println(id_ + " " + word.getIn_polish());
 
             Text polishTitle = new Text("Word in Polish");
@@ -75,7 +86,7 @@ public class EditPane extends GridPane {
 
                     try {
                         System.out.println("kliknieto editnieto");
-                        Service.editWord(id, englishWord, polishWord);
+                        service.editWord(id, englishWord, polishWord);
                         App.getInstance().setScene(new UserScene("The word has been edited."));
                     } catch (Exception e1) {
                         e1.printStackTrace();

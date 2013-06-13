@@ -4,6 +4,7 @@ import com.flashcard.fx.App;
 import com.flashcard.fx.scene.logged.UserScene;
 import com.flashcard.system.Service;
 import com.flashcard.system.Settings;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,18 +19,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Date: 26/04/2013
  * Time: 10:57
  */
+@Component
 public class SignInPane extends GridPane {
 
     private final TextField emailTextField;
     private final PasswordField passwordField;
     private final Text message;
 
-    private Service service = Service.getInstance();
+//    @Autowired
+//    private UserScene userScene;
+    @Autowired
+    private Service service;
 
     public SignInPane() {
         setAlignment(Pos.CENTER);
@@ -81,18 +88,32 @@ public class SignInPane extends GridPane {
         public void handle(ActionEvent actionEvent) {
             message.setFill(Color.FIREBRICK);
             message.setText("Verifying data...");
-            try {
-                if (service.signIn(emailTextField.getText(), passwordField.getText()))
-                    App.getInstance().setScene(new UserScene());
-            } catch (NullPointerException e) {
-                System.err.println("NPE");
-                message.setText("Something went terribly wrong...");
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                message.setText(e.getMessage());
-            } finally {
-                App.getInstance().getPrimaryStage().sizeToScene();
-            }
+            new Thread(new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    try {
+                        service.signIn(emailTextField.getText(), passwordField.getText());
+                    } catch (NullPointerException e) {
+                        System.err.println("NPE");
+                        message.setText("Something went terribly wrong...");
+                        throw e;
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                        message.setText(e.getMessage());
+                        throw e;
+                    } finally {
+                        App.getInstance().getPrimaryStage().sizeToScene();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void succeeded() {
+//                    App.getInstance().setScene(userScene);
+                    App.getInstance().setScene(App.getInstanceContext().getBean(UserScene.class));
+                }
+
+            }).start();
         }
     }
 }
