@@ -9,10 +9,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -20,6 +16,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import org.apache.http.client.fluent.Request;
 
 import java.util.ArrayList;
@@ -32,12 +31,18 @@ import java.util.List;
  * Date: 08.06.13
  * Time: 17:03
  */
+
+@Component
 public class AddNewWordPane extends GridPane{
     private static AddNewWordPane instance;
     //private final VBox resultsBox;
     private final TextField englishWordField = new TextField();
     private final TextField polishWordField = new TextField();
     private final Button addButton = new Button("Add");
+    @Autowired
+    private Service service;
+    @Autowired
+    private UserScene userScene;
     private Service service = Service.getInstance();
     private String imageURL = "";
 
@@ -83,7 +88,7 @@ public class AddNewWordPane extends GridPane{
 
                 try {
                     service.addNewWord(englishWord, polishWord);
-                    App.getInstance().setScene(new UserScene(new MessagePane("The word has been added.")));
+                    userScene.setPane(new MessagePane("The word has been added."));
                 } catch (Exception e1) {
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }

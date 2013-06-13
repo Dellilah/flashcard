@@ -2,12 +2,11 @@ package com.flashcard.fx.component;
 
 import com.flashcard.dto.WordDTO;
 import com.flashcard.fx.App;
-import com.flashcard.fx.scene.WordListScene;
 import com.flashcard.fx.scene.logged.UserScene;
-import com.flashcard.fx.scene.logged.pane.WordListPane;
 import com.flashcard.system.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -15,9 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
 import org.apache.http.client.fluent.Request;
 
@@ -28,7 +24,7 @@ import java.util.List;
  * Date: 11/06/13
  * Time: 09:09
  */
-public class WordsTable extends TableView<WordDTO> {
+public class WordsTable extends TableView<WordDTO> implements Refreshable {
     private Service service = Service.getInstance();
 
     public WordsTable() {
@@ -150,19 +146,26 @@ public class WordsTable extends TableView<WordDTO> {
         });
 
         getColumns().addAll(action, image, polishWord, englishWord, createDate, updateDate);
-
-        refresh();
-
-
     }
 
-    private void refresh() {
-        try {
-            List<WordDTO> dataList = service.wordsIndex();
-            ObservableList<WordDTO> tableData = FXCollections.observableArrayList(dataList);
+    public void refresh() {
+        new Thread(new Task<Void>() {
+            private ObservableList<WordDTO> tableData;
 
-            setItems(tableData);
-        } catch (Exception ignored) {
-        }
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    List<WordDTO> dataList = service.wordsIndex();
+                    tableData = FXCollections.observableArrayList(dataList);
+                } catch (Exception ignored) {
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                setItems(tableData);
+            }
+        }).start();
     }
 }
