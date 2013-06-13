@@ -9,6 +9,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -43,7 +47,6 @@ public class AddNewWordPane extends GridPane{
     private Service service;
     @Autowired
     private UserScene userScene;
-    private Service service = Service.getInstance();
     private String imageURL = "";
 
     public AddNewWordPane(){
@@ -109,7 +112,7 @@ public class AddNewWordPane extends GridPane{
                     List<String> words = Arrays.asList(englishWordField.getText());
                     for (String word : words) {
                         if (word != null && !word.equals("")) {
-                            List<String> images = Service.getImages(word, 5);
+                            List<String> images = service.getImages(word, 5);
                             for (final String image : images) {
                                 final ImageView imageView = new ImageView(new Image(Request.Get(image).execute().returnContent().asStream()));
                                 imageView.setPreserveRatio(true);
@@ -140,11 +143,5 @@ public class AddNewWordPane extends GridPane{
         vBox.getChildren().add(button);
         add(vBox, 0, 8, 2, 1);
 
-    }
-
-    public static AddNewWordPane getInstance() {
-        if (instance == null)
-            instance = new AddNewWordPane();
-        return instance;
     }
 }
