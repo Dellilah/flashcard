@@ -2,6 +2,7 @@ package com.flashcard.fx.scene.signin.pane;
 
 import com.flashcard.fx.App;
 import com.flashcard.fx.scene.logged.UserScene;
+import com.flashcard.fx.scene.logged.pane.UserPane;
 import com.flashcard.system.Service;
 import com.flashcard.system.Settings;
 import javafx.concurrent.Task;
@@ -34,7 +35,9 @@ public class SignInPane extends GridPane {
     private final Text message;
 
 //    @Autowired
-//    private UserScene userScene;
+    private UserScene userScene;
+    private UserPane userPane;
+
     @Autowired
     private Service service;
 
@@ -109,12 +112,31 @@ public class SignInPane extends GridPane {
 
                 @Override
                 protected void succeeded() {
-//                    App.getInstance().setScene(userScene);
-                    App.getInstance().setScene(App.getInstanceContext().getBean(UserScene.class));
+//                    userScene.setRoot(userPane);
+                    App.getInstance().setScene(userScene);
+//                    App.getInstance().setScene(App.getInstanceContext().getBean(UserScene.class));
                 }
 
             }).start();
         }
+    }
+
+    public UserScene getUserScene() {
+        return userScene;
+    }
+
+    @Autowired
+    public void setUserScene(UserScene userScene) {
+        this.userScene = userScene;
+    }
+
+    public UserPane getUserPane() {
+        return userPane;
+    }
+
+    @Autowired
+    public void setUserPane(UserPane userPane) {
+        this.userPane = userPane;
     }
 }
 

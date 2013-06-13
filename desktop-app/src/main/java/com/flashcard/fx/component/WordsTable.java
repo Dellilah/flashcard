@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import org.apache.http.client.fluent.Request;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,10 +28,12 @@ import java.util.List;
  */
 public class WordsTable extends TableView<WordDTO> implements Refreshable {
     private Service service = Service.getInstance();
+    private UserScene userScene;
 
     public WordsTable() {
         TableColumn<WordDTO, Integer> action = new TableColumn<WordDTO, Integer>("");
         action.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
+        action.setPrefWidth(140);
         action.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
             @Override
             public TableCell<WordDTO, Integer> call(TableColumn<WordDTO, Integer> tableColumn) {
@@ -58,7 +62,7 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
                             btnEDT.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
-                                    App.getInstance().setScene(new UserScene(item));
+                                    userScene.showEditPane(item);
                                     System.out.println("kliknieto");
                                 }
                             });
@@ -67,6 +71,10 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
                             HBox hBox = new HBox();
                             hBox.getStyleClass().add("button-row");
                             hBox.getChildren().addAll(btnDelete, btnEDT);
+                            hBox.setMaxHeight(Double.MAX_VALUE);
+                            btnEDT.setAlignment(Pos.CENTER);
+                            btnDelete.setAlignment(Pos.CENTER);
+                            hBox.setAlignment(Pos.CENTER);
                             setGraphic(hBox);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                         }
@@ -91,7 +99,11 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
                                 imageView = new ImageView(new Image(Request.Get(item).execute().returnContent().asStream()));
                                 imageView.setPreserveRatio(true);
                                 imageView.setFitHeight(40);
-                                setGraphic(imageView);
+                                HBox hBox = new HBox();
+                                hBox.getChildren().add(imageView);
+                                hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                                hBox.setAlignment(Pos.CENTER);
+                                setGraphic(hBox);
                             } catch (IOException ignored) {
                                 setGraphic(new Label("No image"));
                             }
@@ -114,37 +126,6 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
         TableColumn<WordDTO, String> updateDate = new TableColumn<>("Updated");
         updateDate.setCellValueFactory((new PropertyValueFactory<WordDTO, String>("updated_at")));
 
-        TableColumn<WordDTO, Integer> editWordButton = new TableColumn<WordDTO, Integer>("Edit");
-        editWordButton.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
-
-        editWordButton.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
-            @Override
-            public TableCell<WordDTO, Integer> call(TableColumn<WordDTO, Integer> wordDTOIntegerTableColumn) {
-                TableCell cell = new TableCell<WordDTO, Integer>(){
-
-                    @Override
-                    public void updateItem(final Integer item, boolean empty){
-                        super.updateItem(item, empty);
-
-                        //System.out.println(item.toString());
-                        if(!empty){
-                            final  Button btnEDT = new Button("Edit");
-                            btnEDT.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    App.getInstance().setScene(new UserScene(item));
-                                    System.out.println("kliknieto");
-                                }
-                            });
-                            setGraphic(btnEDT);
-                            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
-
         getColumns().addAll(action, image, polishWord, englishWord, createDate, updateDate);
     }
 
@@ -157,6 +138,7 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
                 try {
                     List<WordDTO> dataList = service.wordsIndex();
                     tableData = FXCollections.observableArrayList(dataList);
+                    setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
                 } catch (Exception ignored) {
                 }
                 return null;
@@ -167,5 +149,14 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
                 setItems(tableData);
             }
         }).start();
+    }
+
+    public UserScene getUserScene() {
+        return userScene;
+    }
+
+    @Autowired
+    public void setUserScene(UserScene userScene) {
+        this.userScene = userScene;
     }
 }

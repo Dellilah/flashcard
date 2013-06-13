@@ -143,15 +143,8 @@ public class Service {
         try {
             String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
             Content s = Request.Get(uri).execute().returnContent();
-            System.out.println(s.asString());
             Gson gson = new Gson();
-            System.out.println(s.asString());
             WordDTO[] result = gson.fromJson(s.asString(), WordDTO[].class);
-            try {
-                throw new Exception("testing");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             return Arrays.asList(result);
         } catch (IOException e) {
             throw new Exception("Cannot get words");
@@ -160,8 +153,13 @@ public class Service {
 
     public List<String> getImages(String keyword, int limit) throws Exception {
         try {
-            String uri = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + keyword + "&key=ABQIAAAAMDidA1PAO0alsihAElsy3xTLCrE5uk8Ud_JrDKiWLKYeT0PD8xQ9hbFvmXJ2enaXdFRHJflbRAe36A&userip=222.222.222.10";
-            Content s = Request.Get(uri).execute().returnContent();
+            URIBuilder uriBuilder = new URIBuilder("https://ajax.googleapis.com/ajax/services/search/images")
+                    .addParameter("v", "1.0")
+                    .addParameter("q", keyword)
+                    .addParameter("key", "ABQIAAAAMDidA1PAO0alsihAElsy3xTLCrE5uk8Ud_JrDKiWLKYeT0PD8xQ9hbFvmXJ2enaXdFRHJflbRAe36A")
+                    .addParameter("userip", "222.222.222.10");
+//            String uri = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + keyword + "&key=ABQIAAAAMDidA1PAO0alsihAElsy3xTLCrE5uk8Ud_JrDKiWLKYeT0PD8xQ9hbFvmXJ2enaXdFRHJflbRAe36A&userip=222.222.222.10";
+            Content s = Request.Get(uriBuilder.toString()).execute().returnContent();
             System.out.println(s.asString());
 
             List<String> result = new ArrayList<>(limit);
@@ -175,7 +173,7 @@ public class Service {
             }
 
             return result;
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new Exception("Cannot get image");
         }
     }

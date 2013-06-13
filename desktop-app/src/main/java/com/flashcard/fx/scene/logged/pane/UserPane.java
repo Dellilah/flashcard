@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,19 +24,16 @@ import org.springframework.stereotype.Component;
  * Time: 13:33
  */
 @Component
+@Lazy
 public class UserPane extends VBox {
     private static UserPane instance;
     private HBox container;
     private ToggleButton translateButton;
     private ToggleButton addWordButton;
     private ToggleButton wordListButton;
-    @Autowired
     private SignInScene signInScene;
-    @Autowired
     private TranslationPane translationPane;
-    @Autowired
     private AddNewWordPane addNewWordPane;
-    @Autowired
     private WordListPane wordListPane;
     //    private ToggleButton editWordButton;
 
@@ -137,7 +135,9 @@ public class UserPane extends VBox {
         translateButton.setSelected(false);
 
         container.getChildren().clear();
-        container.getChildren().add(EditPane.getInstance(id));
+        EditPane bean = App.getInstanceContext().getBean(EditPane.class);
+        bean.setWordId(id);
+        container.getChildren().add(bean);
     }
 
     public void setMessagePane(String message){
@@ -156,9 +156,39 @@ public class UserPane extends VBox {
         App.getInstance().getPrimaryStage().sizeToScene();
     }
 
-    public static UserPane getInstance(Integer id) {
-        if (instance == null)
-            instance = new UserPane(id);
-        return instance;
+    public SignInScene getSignInScene() {
+        return signInScene;
+    }
+
+    @Autowired
+    public void setSignInScene(SignInScene signInScene) {
+        this.signInScene = signInScene;
+    }
+
+    public TranslationPane getTranslationPane() {
+        return translationPane;
+    }
+
+    @Autowired
+    public void setTranslationPane(TranslationPane translationPane) {
+        this.translationPane = translationPane;
+    }
+
+    public AddNewWordPane getAddNewWordPane() {
+        return addNewWordPane;
+    }
+
+    @Autowired
+    public void setAddNewWordPane(AddNewWordPane addNewWordPane) {
+        this.addNewWordPane = addNewWordPane;
+    }
+
+    public WordListPane getWordListPane() {
+        return wordListPane;
+    }
+
+    @Autowired
+    public void setWordListPane(WordListPane wordListPane) {
+        this.wordListPane = wordListPane;
     }
 }

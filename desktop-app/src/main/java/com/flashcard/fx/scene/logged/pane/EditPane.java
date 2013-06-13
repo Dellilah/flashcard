@@ -8,13 +8,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,17 +26,19 @@ import org.springframework.stereotype.Component;
  * Time: 19:14
  */
 @Component
+@Lazy
 public class EditPane extends GridPane {
-    private static EditPane instance;
     private final TextField englishWordField;
     private final TextField polishWordField;
     private final Button editButton;
-    private final Integer id;
+    private Integer wordId;
 
-    private Service service = Service.getInstance();
+    @Autowired
+    private Service service;
+    private UserScene userScene;
 
     public EditPane() {
-        id = null;
+        wordId = null;
         englishWordField = null;
         polishWordField = null;
         editButton = null;
@@ -47,7 +51,7 @@ public class EditPane extends GridPane {
         setHgap(10);
         setVgap(10);
 
-        this.id=id_;
+        this.wordId =id_;
 
         Text sceneTitle = new Text("Wordlist");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -86,8 +90,10 @@ public class EditPane extends GridPane {
 
                     try {
                         System.out.println("kliknieto editnieto");
-                        service.editWord(id, englishWord, polishWord);
-                        App.getInstance().setScene(new UserScene("The word has been edited."));
+                        service.editWord(wordId, englishWord, polishWord);
+
+                        userScene.setMessage("The word has been edited.");
+                        App.getInstance().setScene(userScene);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -103,9 +109,20 @@ public class EditPane extends GridPane {
         }
     }
 
-    public static EditPane getInstance(Integer id) {
-        //if (instance == null)
-            instance = new EditPane(id);
-        return instance;
+    public Integer getWordId() {
+        return wordId;
+    }
+
+    public void setWordId(Integer wordId) {
+        this.wordId = wordId;
+    }
+
+    public UserScene getUserScene() {
+        return userScene;
+    }
+
+    @Autowired
+    public void setUserScene(UserScene userScene) {
+        this.userScene = userScene;
     }
 }

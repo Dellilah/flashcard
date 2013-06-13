@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -20,6 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -30,11 +33,13 @@ import java.util.List;
  * Time: 10:57
  */
 @Component
+@Lazy
 public class TranslationPane extends GridPane implements Refreshable {
     private final VBox resultsBox;
     private final TextField wordTextField;
 
-    private Service service = Service.getInstance();
+    @Autowired
+    private Service service;
 
     private TranslationPane() {
         setAlignment(Pos.CENTER);
@@ -122,8 +127,9 @@ public class TranslationPane extends GridPane implements Refreshable {
                             }
 
                             try {
-                                //service.addNewWord(englishWord, polishWord);
-                                App.getInstance().setScene(new UserScene(new AddNewWordPane(polishWord, englishWord)));
+                                AddNewWordPane bean = App.getInstanceContext().getBean(AddNewWordPane.class);
+                                bean.presetWords(polishWord, englishWord);
+                                App.getInstanceContext().getBean(UserScene.class).setPane(bean);
                             } catch (Exception e1) {
                                 e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                             }
