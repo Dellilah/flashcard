@@ -31,7 +31,7 @@ public class Settings {
         put(Property.login, "");
         put(Property.password, "");
         put(Property.token, "");
-        put(Property.host, "http://flash-cargit d.herokuapp.com");
+        put(Property.host, "http://flash-card.herokuapp.com");
         put(Property.alwaysOnTop, "true");
     }};
     private static Properties properties;

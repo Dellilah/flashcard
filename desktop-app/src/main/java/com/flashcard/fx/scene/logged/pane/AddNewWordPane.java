@@ -16,6 +16,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,7 +33,10 @@ public class AddNewWordPane extends GridPane{
     private final TextField englishWordField = new TextField();
     private final TextField polishWordField = new TextField();
     private final Button addButton = new Button("Add");
-    private Service service = Service.getInstance();
+    @Autowired
+    private Service service;
+    @Autowired
+    private UserScene userScene;
 
     public AddNewWordPane(){
         init();
@@ -76,7 +80,7 @@ public class AddNewWordPane extends GridPane{
 
                 try {
                     service.addNewWord(englishWord, polishWord);
-                    App.getInstance().setScene(new UserScene(new MessagePane("The word has been added.")));
+                    userScene.setPane(new MessagePane("The word has been added."));
                 } catch (Exception e1) {
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }

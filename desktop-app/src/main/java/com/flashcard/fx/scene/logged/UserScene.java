@@ -2,6 +2,7 @@ package com.flashcard.fx.scene.logged;
 
 import com.flashcard.fx.App;
 import com.flashcard.fx.scene.logged.pane.UserPane;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import org.springframework.context.annotation.Scope;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
  * Time: 13:32
  */
 @Component
-@Scope("prototype")
 public class UserScene extends Scene {
     public UserScene() {
         super(App.getInstanceContext().getBean(UserPane.class));
@@ -35,5 +35,9 @@ public class UserScene extends Scene {
     public UserScene(String message){
         super(App.getInstanceContext().getBean(UserPane.class));
         App.getInstanceContext().getBean(UserPane.class).setMessagePane(message);
+    }
+
+    public void setPane(Parent pane) {
+        App.getInstanceContext().getBean(UserPane.class).setContent(pane);
     }
 }

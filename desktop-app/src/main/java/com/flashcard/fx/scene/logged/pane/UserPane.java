@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
  * Time: 13:33
  */
 @Component
-@Scope("prototype")
 public class UserPane extends VBox {
     private static UserPane instance;
     private HBox container;
@@ -34,6 +33,8 @@ public class UserPane extends VBox {
     private SignInScene signInScene;
     @Autowired
     private TranslationPane translationPane;
+    @Autowired
+    private AddNewWordPane addNewWordPane;
     @Autowired
     private WordListPane wordListPane;
     //    private ToggleButton editWordButton;
@@ -82,7 +83,7 @@ public class UserPane extends VBox {
                     wordListPane.refresh();
                     UserPane.this.setContent(wordListPane);
                 } else /*if (new_toggle == addWordButton)*/ {
-                    UserPane.this.setContent(AddNewWordPane.getInstance());
+                    UserPane.this.setContent(addNewWordPane);
                 }
 //                    if (new_toggle == null)
 //                        rect.setFill(Color.WHITE);
