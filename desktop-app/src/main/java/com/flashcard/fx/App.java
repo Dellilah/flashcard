@@ -44,11 +44,12 @@ public class App extends Application {
         instance = this;
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Welcome to Flashcard");
-        primaryStage.show();
 
         SignInScene scene = getContext().getBean(SignInScene.class);
         setScene(scene);
         getPrimaryStage().sizeToScene();
+
+        primaryStage.show();
     }
 
     public AnnotationConfigApplicationContext getContext() {
