@@ -51,6 +51,7 @@ public class AddNewWordPane extends GridPane{
     private Service service;
     private UserScene userScene;
     private String imageURL = "";
+    private ImageSelect imageSelect;
 
     public AddNewWordPane(){
         init();
@@ -96,7 +97,7 @@ public class AddNewWordPane extends GridPane{
                 String polishWord = polishWordField.getText();
 
                 try {
-                    service.addNewWord(englishWord, polishWord);
+                    service.addNewWord(englishWord, polishWord, imageSelect.getSelected());
                     userScene.setPane(new MessagePane("The word has been added."));
                 } catch (Exception e1) {
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -107,7 +108,8 @@ public class AddNewWordPane extends GridPane{
             }
         });
         buttons.getChildren().add(addButton);
-        final ImageSelect imageSelect = new ImageSelect();
+        imageSelect = new ImageSelect();
+        imageSelect.setMaxSize(300, 300);
         Button button = new Button("Search for image");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override

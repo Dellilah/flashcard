@@ -38,7 +38,6 @@ public class UserScene extends Scene {
     }
 
     public void showEditPane(Integer id) {
-
         userPane.setEditPane(id);
     }
 

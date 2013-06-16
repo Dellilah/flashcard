@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -35,6 +36,7 @@ public class UserPane extends VBox {
     private TranslationPane translationPane;
     private AddNewWordPane addNewWordPane;
     private WordListPane wordListPane;
+    private EditPane editPane;
     //    private ToggleButton editWordButton;
 
     public UserPane() {
@@ -133,11 +135,13 @@ public class UserPane extends VBox {
 
     public void setEditPane(Integer id){
         translateButton.setSelected(false);
+        addWordButton.setSelected(false);
+        wordListButton.setSelected(false);
 
         container.getChildren().clear();
-        EditPane bean = App.getInstanceContext().getBean(EditPane.class);
-        bean.setWordId(id);
-        container.getChildren().add(bean);
+        container.getChildren().add(editPane);
+        editPane.setWordId(id);
+        App.getInstance().getPrimaryStage().sizeToScene();
     }
 
     public void setMessagePane(String message){
@@ -150,7 +154,7 @@ public class UserPane extends VBox {
     }
 
     public void setContent(Parent content) {
-        container.getChildren().removeAll(container.getChildren());
+        container.getChildren().clear();
         container.getChildren().add(content);
         HBox.setHgrow(content, Priority.ALWAYS);
         App.getInstance().getPrimaryStage().sizeToScene();
@@ -190,5 +194,14 @@ public class UserPane extends VBox {
     @Autowired
     public void setWordListPane(WordListPane wordListPane) {
         this.wordListPane = wordListPane;
+    }
+
+    public EditPane getEditPane() {
+        return editPane;
+    }
+
+    @Autowired
+    public void setEditPane(EditPane editPane) {
+        this.editPane = editPane;
     }
 }

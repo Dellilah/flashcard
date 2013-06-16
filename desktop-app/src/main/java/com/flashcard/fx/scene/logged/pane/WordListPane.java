@@ -21,8 +21,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,8 +41,10 @@ public class WordListPane extends VBox implements Refreshable {
         setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);
         setPadding(new Insets(25, 25, 25, 25));
+    }
 
-        wordList = new WordsTable();
+    @PostConstruct
+    private void init() {
         wordList.setMaxWidth(Double.MAX_VALUE);
         wordList.setMinWidth(850);
         getChildren().add(wordList);
@@ -48,5 +53,14 @@ public class WordListPane extends VBox implements Refreshable {
     @Override
     public void refresh() {
         wordList.refresh();
+    }
+
+    public WordsTable getWordList() {
+        return wordList;
+    }
+
+    @Autowired
+    public void setWordList(WordsTable wordList) {
+        this.wordList = wordList;
     }
 }

@@ -76,7 +76,7 @@ public class Service {
         }
     }
 
-    public void addNewWord(String englishWord, String polishWord) throws Exception {
+    public void addNewWord(String englishWord, String polishWord, String remoteImageUrl) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words.json?api_token=" + Settings.getToken();
             Content s = Request.Post(uri)
@@ -84,6 +84,7 @@ public class Service {
                             Form.form()
                                     .add("in_english", englishWord)
                                     .add("in_polish", polishWord)
+                                    .add("remote_image_url", remoteImageUrl)
                                     .build()
                             , Charset.defaultCharset()).execute().returnContent();
         } catch (IOException e) {
@@ -93,7 +94,7 @@ public class Service {
         }
     }
 
-    public void editWord(Integer id, String inEnglish, String inPolish) throws Exception {
+    public void editWord(Integer id, String inEnglish, String inPolish, String remoteImageUrl) throws Exception {
         try {
             String uri = Settings.getHost() + "/api/words/" + id + ".json?api_token=" + Settings.getToken();
             Content s = Request.Put(uri)
@@ -101,6 +102,7 @@ public class Service {
                             Form.form()
                                     .add("in_english", inEnglish)
                                     .add("in_polish", inPolish)
+                                    .add("remote_image_url", remoteImageUrl)
                                     .build()
                             , Charset.defaultCharset()).execute().returnContent();
             //System.out.println(s.asString());

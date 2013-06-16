@@ -11,6 +11,7 @@ public class WordDTO {
     String in_polish;
     String created_at;
     String updated_at;
+    String image_url;
 
     public String getCreated_at() {
         return created_at;
@@ -52,8 +53,12 @@ public class WordDTO {
         this.updated_at = updated_at;
     }
 
-    public String getImageAddress() {
-        return "https://piotrplaneta.s3.amazonaws.com/flashcard/word/image/14/images";
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     @Override

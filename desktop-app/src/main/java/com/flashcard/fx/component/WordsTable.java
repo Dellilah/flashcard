@@ -18,6 +18,8 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,8 +28,11 @@ import java.util.List;
  * Date: 11/06/13
  * Time: 09:09
  */
+@Component
+@Lazy
 public class WordsTable extends TableView<WordDTO> implements Refreshable {
-    private Service service = Service.getInstance();
+    @Autowired
+    private Service service;
     private UserScene userScene;
 
     public WordsTable() {
@@ -84,7 +89,7 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
         });
 
         TableColumn<WordDTO, String> image = new TableColumn<>("Image");
-        image.setCellValueFactory(new PropertyValueFactory<WordDTO, String>("imageAddress"));
+        image.setCellValueFactory(new PropertyValueFactory<WordDTO, String>("image_url"));
         image.setCellFactory(new Callback<TableColumn<WordDTO, String>, TableCell<WordDTO, String>>() {
             @Override
             public TableCell<WordDTO, String> call(TableColumn<WordDTO, String> tableColumn) {
