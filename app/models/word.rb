@@ -1,6 +1,7 @@
 class Word < ActiveRecord::Base
   attr_accessible :in_english, :in_polish, :image, :remote_image_url
   belongs_to :user
+  belongs_to :repetition, :dependent => :delete
 
   mount_uploader :image, ImageUploader
 
@@ -35,4 +36,14 @@ class Word < ActiveRecord::Base
       :updated_at => updated_at
     }
   end
+
+  def add_repetition
+    repetition = Repetition.new(:word => self)
+    repetition.set_next_repetition_good
+    self.repetition = repetition
+    self.save
+    repetition.save
+  end
+
+
 end

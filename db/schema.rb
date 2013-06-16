@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130511144302) do
+ActiveRecord::Schema.define(:version => 20130514084208) do
+
+  create_table "repetitions", :force => true do |t|
+    t.integer  "word_id"
+    t.integer  "repetitions"
+    t.date     "date"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name"
@@ -30,9 +38,10 @@ ActiveRecord::Schema.define(:version => 20130511144302) do
     t.text     "in_polish"
     t.text     "in_english"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "image"
+    t.integer  "repetition_id"
   end
 
 end
