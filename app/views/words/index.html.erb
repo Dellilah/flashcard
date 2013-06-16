@@ -1,6 +1,24 @@
 <h1>Listing words</h1>
 
-<table class='table'>
+<script language="javascript">
+    var checked_value = true;
+    function checkAll(inputName)
+    {
+
+        var checkboxes = new Array();
+        checkboxes = document.getElementsByName(inputName);
+        for (var i=0; i<checkboxes.length; i++)  {
+            if (checkboxes[i].type == 'checkbox')   {
+                checkboxes[i].checked = checked_value;
+            }
+        }
+        checked_value = !checked_value;
+    }
+
+</script>
+
+<table class='table' id='test'>
+
   <tr>
     <th>In polish</th>
     <th>In english</th>
@@ -8,8 +26,10 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
+    <th><input type="checkbox" onclick="checkAll('words_ids[]')" /></th>
   </tr>
-
+  <%= form_tag repetitions_save_path, :id => 'set_repetitions_form' do %>
 <% @words.each do |word| %>
   <tr>
     <td><%= word.in_polish %></td>
@@ -18,10 +38,13 @@
     <td><%= link_to 'Edit', edit_word_path(word) %></td>
     <td><%= link_to 'Edit image', set_image_path(word) %></td>
     <td><%= link_to 'Destroy', word, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+    <td><%= link_to 'Repeat', word_repetition_path(word) %></td>
+    <td><%= check_box_tag 'words_ids[]', word.id, !word.repetition.nil? %></td>
+   </tr>
+      <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New Word', new_word_path, :class => 'btn btn-primary' %>
+      <%= submit_tag 'Save changes', :class => 'btn btn-primary' %>
+  <% end %>
+  <%= link_to 'New Word', new_word_path, :class => 'btn btn-primary' %>

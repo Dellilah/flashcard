@@ -1,0 +1,36 @@
+
+
+    <div class="card" id="<%= @word.id %>">
+      <h3> <%= @word.in_english %> </h3>
+      <% if @word.image_url.present? %>
+          <img src="<%= @word.image_url %>" />
+      <% end %>
+      <div id="hidden_answer">
+      <h3 id="tr<%= @word.id %>"> <%= @word.in_polish %> </h3>
+      <h3 id="question">Did you manage to guess?</h3>
+      <%= link_to 'Yes', asses_answer_word_repetition_path(@word.id, :answer => 'yes'), :class => 'btn btn-primary' %>
+      <%= link_to 'No', asses_answer_word_repetition_path(@word.id, :answer => 'no'), :class => 'btn btn-primary' %>
+        <%= link_to 'Know well ', asses_answer_word_repetition_path(@word.id, :answer => 'know'), :class => 'btn btn-primary' %>
+        <!--
+        <form action="nie_wiem">
+          <input type="submit" class="btn btn-primary" name="YES">
+          <input type="submit" class="btn btn-primary" name="YES">
+        </form>
+         -->
+      </div>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        $("#hidden_answer").hide(); //Initially form wil be hidden.
+        $("#<%= @word.id %>").bind('click',function() {
+            $('#hidden_answer').show();//Form shows on button click
+            $('#<%= @word.id %>').css({"background-color": "#E3E3E3"});
+        });
+        });
+    </script>

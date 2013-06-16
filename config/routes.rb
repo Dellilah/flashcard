@@ -1,5 +1,12 @@
 Flashcard::Application.routes.draw do
-  get "memo/home"
+  resources :words do
+    resource :repetition, only: [:show, :update] do
+      get 'asses_answer', :on => :member
+    end
+  end
+
+  match 'repetition/give_next', to: 'repetitions#give_next'
+  match 'repetitions/save', to: 'repetitions#save'
 
   mount Api::Engine => "/api"
 
@@ -10,7 +17,7 @@ Flashcard::Application.routes.draw do
   match 'words/:id/set_image', to: 'Words#set_image', :as => :set_image
 
 
-  root :to => 'Home#index'
+  root :to => 'words#index'
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]

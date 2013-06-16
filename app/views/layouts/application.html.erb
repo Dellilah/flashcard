@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <%= yield :head %>
   <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -28,12 +29,15 @@
               <% else %>
                 <li class="menu-item <%= 'active' if params[:controller] == 'words' %>">
                   <%= link_to '<img src="/words.svg"> Words'.html_safe,  words_path  %></a></li>
+                 <li class="menu-item <%= 'active' if params[:controller] == 'repetitions' %>">
+                    <%= link_to 'Repeat'.html_safe, repetition_give_next_path %></a></li>
                 <li class="menu-item <%= 'active' if params[:controller] == 'users' and params[:action] == 'show' %>">
                   <%= link_to '<img src="/user.svg"> Profile'.html_safe, current_user %></a></li>
                 <li class="menu-item <%= 'active' if params[:controller] == 'users' and params[:action] == 'edit' %>">
                   <%= link_to '<img src="/gear.svg"> Settings'.html_safe, edit_user_path(current_user) %></a></li>
                 <li class="menu-item <%= 'active' if params[:controller] == 'controller1' %>">
                   <%= link_to '<img src="/exit.svg"> Sign out'.html_safe, signout_path, method: :delete %></a></li>
+
               <% end %>
             </ul>
           </div><!--/.nav-collapse -->
@@ -51,6 +55,6 @@
 
   </div>
 
-<!-- <%= debug(params) if Rails.env.development? %> -->
+<%= debug(params) if Rails.env.development? %>
 </body>
 </html>
