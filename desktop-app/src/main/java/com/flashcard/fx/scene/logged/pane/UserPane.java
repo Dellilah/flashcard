@@ -1,16 +1,16 @@
 package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.fx.App;
+import com.flashcard.fx.scene.signin.SignInScene;
 import com.flashcard.system.Settings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
@@ -20,14 +20,30 @@ import javafx.scene.text.Text;
  * Time: 13:33
  */
 public class UserPane extends VBox {
-
+    private static UserPane instance;
     private HBox container;
     private ToggleButton translateButton;
     private ToggleButton addWordButton;
     private ToggleButton wordListButton;
+//    private ToggleButton editWordButton;
 
     public UserPane() {
         init();
+    }
+
+    public UserPane(Integer id){
+        init();
+        setEditPane(id);
+    }
+
+    public UserPane(Pane pane) {
+        init();
+        setContent(pane);
+    }
+
+    public UserPane(String message){
+        init();
+        setMessagePane(message);
     }
 
     private void init() {
@@ -36,6 +52,7 @@ public class UserPane extends VBox {
         translateButton = new ToggleButton("Translate");
         addWordButton = new ToggleButton("Add Word");
         wordListButton = new ToggleButton("Word List");
+//        editWordButton = new ToggleButton("Edit");
 
         ToggleGroup group = new ToggleGroup();
         translateButton.setSelected(true);
@@ -44,7 +61,9 @@ public class UserPane extends VBox {
         addWordButton.setToggleGroup(group);
         addWordButton.getStyleClass().add("button");
         wordListButton.setToggleGroup(group);
-        wordListButton.getStyleClass().add("button-last");
+        wordListButton.getStyleClass().add("button");
+//        editWordButton.setToggleGroup(group);
+//        editWordButton.getStyleClass().add("button-last");
 
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) {
@@ -52,8 +71,8 @@ public class UserPane extends VBox {
                     UserPane.this.setContent(TranslationPane.getInstance());
                 } else if (new_toggle == wordListButton) {
                     UserPane.this.setContent(WordListPane.getInstance());
-                } else {
-                    UserPane.this.setContent(new HBox());
+                } else /*if (new_toggle == addWordButton)*/ {
+                    UserPane.this.setContent(AddNewWordPane.getInstance());
                 }
 //                    if (new_toggle == null)
 //                        rect.setFill(Color.WHITE);
@@ -63,12 +82,25 @@ public class UserPane extends VBox {
 //                        );
             }
         });
+        MenuBar menuBar = new MenuBar();
 
+        // --- Menu File
+        Menu menuUser = new Menu("Hello, " + Settings.getLogin());
+        menuUser.getStyleClass().add("plain-menu");
+        MenuItem add = new MenuItem("Log out");
+        add.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                App.getInstance().setScene(new SignInScene());
+            }
+        });
+        menuUser.getItems().addAll(add);
+        menuBar.getMenus().addAll(menuUser);
+        menuBar.getStyleClass().add("plain-menuBar");
         Text text = new Text("Hello, " + Settings.getLogin());
         HBox textBox = new HBox();
         textBox.setPadding(new Insets(0, 0, 0, 20));
         HBox.setHgrow(textBox, Priority.ALWAYS);
-        textBox.getChildren().add(text);
+        textBox.getChildren().add(menuBar);
         textBox.setAlignment(Pos.CENTER_RIGHT);
         textBox.setMaxWidth(Double.MAX_VALUE);
 
@@ -90,10 +122,30 @@ public class UserPane extends VBox {
         container.getChildren().add(TranslationPane.getInstance());
     }
 
+    private void setEditPane(Integer id){
+        translateButton.setSelected(false);
+
+        container.getChildren().clear();
+        container.getChildren().add(EditPane.getInstance(id));
+    }
+
+    private void setMessagePane(String message){
+        translateButton.setSelected(false);
+
+        container.getChildren().clear();
+        container.getChildren().add(MessagePane.getInstance(message));
+    }
+
     public void setContent(Parent content) {
         container.getChildren().removeAll(container.getChildren());
         container.getChildren().add(content);
         HBox.setHgrow(content, Priority.ALWAYS);
         App.getInstance().getPrimaryStage().sizeToScene();
+    }
+
+    public static UserPane getInstance(Integer id) {
+        if (instance == null)
+            instance = new UserPane(id);
+        return instance;
     }
 }

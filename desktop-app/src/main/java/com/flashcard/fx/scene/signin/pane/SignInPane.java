@@ -20,7 +20,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
- * User: ghaxx
  * Date: 26/04/2013
  * Time: 10:57
  */
@@ -29,6 +28,8 @@ public class SignInPane extends GridPane {
     private final TextField emailTextField;
     private final PasswordField passwordField;
     private final Text message;
+
+    private Service service = Service.getInstance();
 
     public SignInPane() {
         setAlignment(Pos.CENTER);
@@ -65,8 +66,8 @@ public class SignInPane extends GridPane {
         add(userName, 0, 1);
         add(pw, 0, 2);
         add(passwordField, 1, 2);
-        add(message, 1, 6);
-        add(hbBtn, 1, 4);
+        add(hbBtn, 0, 4, 2, 1);
+        add(message, 0, 6, 2, 1);
     }
 
     private class SignInHandler implements EventHandler<ActionEvent> {
@@ -80,15 +81,19 @@ public class SignInPane extends GridPane {
         public void handle(ActionEvent actionEvent) {
             message.setFill(Color.FIREBRICK);
             message.setText("Verifying data...");
-
             try {
-                if(Service.signIn(emailTextField.getText(), passwordField.getText()))
-                    App.getInstance().setScene(new Scene(new WordListPane()));
+                if (service.signIn(emailTextField.getText(), passwordField.getText()))
+                    App.getInstance().setScene(new UserScene());
+            } catch (NullPointerException e) {
+                System.err.println("NPE");
+                message.setText("Something went terribly wrong...");
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
                 message.setText(e.getMessage());
+            } finally {
                 App.getInstance().getPrimaryStage().sizeToScene();
             }
         }
     }
 }
+
