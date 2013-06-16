@@ -13,7 +13,7 @@ class Repetition < ActiveRecord::Base
     self.save
   end
 
-  @@repetition_interval_days = [1, 7, 30, 150, 300 ]
+  @@repetition_interval_days = [0, 1, 7, 30, 150, 300 ]
 
   def set_next_repetition_good
     self.default_values

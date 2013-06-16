@@ -30,11 +30,12 @@ class RepetitionsController < ApplicationController
         flash[:notice] = 'You knew this word'
     end
     flash[:notice] = 'You guessed wrong'
-    if word.nil?
+    new_word=draw_repetition
+    if new_word.nil?
       flash[:notice] = 'You repeated all your words. Congratulations!'
       redirect_to words_path
     else
-      redirect_to word_repetition_path(draw_repetition_other_than(word.id))
+      redirect_to word_repetition_path(new_word)
     end
   end
 
