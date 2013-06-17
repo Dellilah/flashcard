@@ -24,6 +24,7 @@
     -fx-background-radius: 0 5 5 0;
   }
 }
+
 .plain-menuBar {
   -fx-background-color: transparent;
   -fx-end-margin: 0;
@@ -40,5 +41,24 @@
         -fx-text-fill: white;
       }
     }
+  }
+}
+
+.image-selection-box {
+  -fx-border-radius: 3px;
+  -fx-border-color: transparent;
+  -fx-border-width: 0;
+  -fx-background-color: transparent;
+  &:hover {
+    -fx-background-color: #e5e3ff;
+  }
+}
+.image-selection-box-selected {
+  -fx-border-radius: 3px;
+  -fx-border-color: blue;
+  -fx-border-width: 2;
+  -fx-background-color: transparent;
+  &:hover {
+    -fx-background-color: #ddffe2;
   }
 }

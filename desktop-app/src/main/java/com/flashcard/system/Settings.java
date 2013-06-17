@@ -1,15 +1,17 @@
 package com.flashcard.system;
 
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 /**
- * User: ghaxx
  * Date: 05/12/2011
  * Time: 11:28
  */
+@Component
 public class Settings {
 
     public static class Property {
@@ -29,7 +31,7 @@ public class Settings {
         put(Property.login, "");
         put(Property.password, "");
         put(Property.token, "");
-        put(Property.host, "http://flash-cargit d.herokuapp.com");
+        put(Property.host, "http://flash-card.herokuapp.com");
         put(Property.alwaysOnTop, "true");
     }};
     private static Properties properties;

@@ -24,3 +24,19 @@
     -fx-background-color: rgba(0, 0, 0, 0.4); }
     .plain-menuBar .menu:pressed .label, .plain-menuBar .menu:focused .label, .plain-menuBar .menu:hover .label {
       -fx-text-fill: white; }
+
+.image-selection-box {
+  -fx-border-radius: 3px;
+  -fx-border-color: transparent;
+  -fx-border-width: 0;
+  -fx-background-color: transparent; }
+  .image-selection-box:hover {
+    -fx-background-color: #e5e3ff; }
+
+.image-selection-box-selected {
+  -fx-border-radius: 3px;
+  -fx-border-color: blue;
+  -fx-border-width: 2;
+  -fx-background-color: transparent; }
+  .image-selection-box-selected:hover {
+    -fx-background-color: #ddffe2; }

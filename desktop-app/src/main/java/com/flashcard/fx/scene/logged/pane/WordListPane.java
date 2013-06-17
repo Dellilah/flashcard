@@ -1,6 +1,7 @@
 package com.flashcard.fx.scene.logged.pane;
 
 import com.flashcard.dto.WordDTO;
+import com.flashcard.fx.component.Refreshable;
 import com.flashcard.fx.component.WordsTable;
 import com.flashcard.system.Service;
 import javafx.collections.FXCollections;
@@ -20,6 +21,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,25 +33,34 @@ import javafx.util.Callback;
  * Date: 27.04.13
  * Time: 14:03
  */
-public class WordListPane extends VBox {
-    private static WordListPane instance;
-    TableView<WordDTO> wordList;
+@Component
+public class WordListPane extends VBox implements Refreshable {
+    WordsTable wordList;
 
     public WordListPane() {
         setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);
         setPadding(new Insets(25, 25, 25, 25));
+    }
 
-        wordList = new WordsTable();
+    @PostConstruct
+    private void init() {
         wordList.setMaxWidth(Double.MAX_VALUE);
         wordList.setMinWidth(850);
         getChildren().add(wordList);
-
     }
 
-    public static WordListPane getInstance() {
-        //if (instance == null)
-            instance = new WordListPane();
-        return instance;
+    @Override
+    public void refresh() {
+        wordList.refresh();
+    }
+
+    public WordsTable getWordList() {
+        return wordList;
+    }
+
+    @Autowired
+    public void setWordList(WordsTable wordList) {
+        this.wordList = wordList;
     }
 }

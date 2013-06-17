@@ -2,24 +2,24 @@ package com.flashcard.fx.component;
 
 import com.flashcard.dto.WordDTO;
 import com.flashcard.fx.App;
-import com.flashcard.fx.scene.WordListScene;
 import com.flashcard.fx.scene.logged.UserScene;
-import com.flashcard.fx.scene.logged.pane.WordListPane;
 import com.flashcard.system.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
 import org.apache.http.client.fluent.Request;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,12 +28,17 @@ import java.util.List;
  * Date: 11/06/13
  * Time: 09:09
  */
-public class WordsTable extends TableView<WordDTO> {
-    private Service service = Service.getInstance();
+@Component
+@Lazy
+public class WordsTable extends TableView<WordDTO> implements Refreshable {
+    @Autowired
+    private Service service;
+    private UserScene userScene;
 
     public WordsTable() {
         TableColumn<WordDTO, Integer> action = new TableColumn<WordDTO, Integer>("");
         action.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
+        action.setPrefWidth(140);
         action.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
             @Override
             public TableCell<WordDTO, Integer> call(TableColumn<WordDTO, Integer> tableColumn) {
@@ -44,6 +49,7 @@ public class WordsTable extends TableView<WordDTO> {
                         super.updateItem(item, empty);
                         if (!empty) {
                             final Button btnDelete = new Button("Remove");
+                            btnDelete.getStyleClass().add("button-first");
                             btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 
                                 @Override
@@ -57,17 +63,23 @@ public class WordsTable extends TableView<WordDTO> {
                                 }
                             });
                             final  Button btnEDT = new Button("Edit");
+                            btnEDT.getStyleClass().add("button-last");
                             btnEDT.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
-                                    App.getInstance().setScene(new UserScene(item));
-                                    System.out.println("kliknięto");
+                                    userScene.showEditPane(item);
+                                    System.out.println("kliknieto");
                                 }
                             });
                             setGraphic(btnEDT);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                             HBox hBox = new HBox();
+                            hBox.getStyleClass().add("button-row");
                             hBox.getChildren().addAll(btnDelete, btnEDT);
+                            hBox.setMaxHeight(Double.MAX_VALUE);
+                            btnEDT.setAlignment(Pos.CENTER);
+                            btnDelete.setAlignment(Pos.CENTER);
+                            hBox.setAlignment(Pos.CENTER);
                             setGraphic(hBox);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                         }
@@ -77,7 +89,7 @@ public class WordsTable extends TableView<WordDTO> {
         });
 
         TableColumn<WordDTO, String> image = new TableColumn<>("Image");
-        image.setCellValueFactory(new PropertyValueFactory<WordDTO, String>("imageAddress"));
+        image.setCellValueFactory(new PropertyValueFactory<WordDTO, String>("image_url"));
         image.setCellFactory(new Callback<TableColumn<WordDTO, String>, TableCell<WordDTO, String>>() {
             @Override
             public TableCell<WordDTO, String> call(TableColumn<WordDTO, String> tableColumn) {
@@ -92,7 +104,11 @@ public class WordsTable extends TableView<WordDTO> {
                                 imageView = new ImageView(new Image(Request.Get(item).execute().returnContent().asStream()));
                                 imageView.setPreserveRatio(true);
                                 imageView.setFitHeight(40);
-                                setGraphic(imageView);
+                                HBox hBox = new HBox();
+                                hBox.getChildren().add(imageView);
+                                hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                                hBox.setAlignment(Pos.CENTER);
+                                setGraphic(hBox);
                             } catch (IOException ignored) {
                                 setGraphic(new Label("No image"));
                             }
@@ -115,51 +131,37 @@ public class WordsTable extends TableView<WordDTO> {
         TableColumn<WordDTO, String> updateDate = new TableColumn<>("Updated");
         updateDate.setCellValueFactory((new PropertyValueFactory<WordDTO, String>("updated_at")));
 
-        TableColumn<WordDTO, Integer> editWordButton = new TableColumn<WordDTO, Integer>("Edit");
-        editWordButton.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
-
-        editWordButton.setCellFactory(new Callback<TableColumn<WordDTO, Integer>, TableCell<WordDTO, Integer>>() {
-            @Override
-            public TableCell<WordDTO, Integer> call(TableColumn<WordDTO, Integer> wordDTOIntegerTableColumn) {
-                TableCell cell = new TableCell<WordDTO, Integer>(){
-
-                    @Override
-                    public void updateItem(final Integer item, boolean empty){
-                        super.updateItem(item, empty); //czy to powinno tu być? co to robi?
-
-                        //System.out.println(item.toString());
-                        if(!empty){
-                            final  Button btnEDT = new Button("Edit");
-                            btnEDT.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    App.getInstance().setScene(new UserScene(item));
-                                    System.out.println("kliknięto");
-                                }
-                            });
-                            setGraphic(btnEDT);
-                            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
-
         getColumns().addAll(action, image, polishWord, englishWord, createDate, updateDate);
-
-        refresh();
-
-
     }
 
-    private void refresh() {
-        try {
-            List<WordDTO> dataList = service.wordsIndex();
-            ObservableList<WordDTO> tableData = FXCollections.observableArrayList(dataList);
+    public void refresh() {
+        new Thread(new Task<Void>() {
+            private ObservableList<WordDTO> tableData;
 
-            setItems(tableData);
-        } catch (Exception ignored) {
-        }
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    List<WordDTO> dataList = service.wordsIndex();
+                    tableData = FXCollections.observableArrayList(dataList);
+                    setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+                } catch (Exception ignored) {
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                setItems(tableData);
+            }
+        }).start();
+    }
+
+    public UserScene getUserScene() {
+        return userScene;
+    }
+
+    @Autowired
+    public void setUserScene(UserScene userScene) {
+        this.userScene = userScene;
     }
 }
