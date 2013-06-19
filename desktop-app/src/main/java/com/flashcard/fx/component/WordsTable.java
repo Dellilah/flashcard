@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,9 +34,15 @@ import java.util.List;
 public class WordsTable extends TableView<WordDTO> implements Refreshable {
     @Autowired
     private Service service;
+    @Autowired
     private UserScene userScene;
 
     public WordsTable() {
+
+    }
+
+    @PostConstruct
+    private void setup() {
         TableColumn<WordDTO, Integer> action = new TableColumn<WordDTO, Integer>("");
         action.setCellValueFactory(new PropertyValueFactory<WordDTO, Integer>("id"));
         action.setPrefWidth(140);
@@ -156,12 +163,4 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
         }).start();
     }
 
-    public UserScene getUserScene() {
-        return userScene;
-    }
-
-    @Autowired
-    public void setUserScene(UserScene userScene) {
-        this.userScene = userScene;
-    }
 }

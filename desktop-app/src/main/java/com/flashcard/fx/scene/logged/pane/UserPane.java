@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * User: ghaxx
  * Date: 27/04/2013
@@ -32,33 +34,38 @@ public class UserPane extends VBox {
     private ToggleButton translateButton;
     private ToggleButton addWordButton;
     private ToggleButton wordListButton;
+    @Autowired
     private SignInScene signInScene;
+    @Autowired
     private TranslationPane translationPane;
+    @Autowired
     private AddNewWordPane addNewWordPane;
+    @Autowired
     private WordListPane wordListPane;
+    @Autowired
     private EditPane editPane;
+
+    @Autowired
+    private MessagePane messagePane;
     //    private ToggleButton editWordButton;
 
     public UserPane() {
-        init();
     }
 
     public UserPane(Integer id){
-        init();
         setEditPane(id);
     }
 
     public UserPane(Pane pane) {
-        init();
         setContent(pane);
     }
 
     public UserPane(String message){
-        init();
         setMessagePane(message);
     }
 
-    private void init() {
+    @PostConstruct
+    private void setup() {
         ToolBar toolBar = new ToolBar();
 
         translateButton = new ToggleButton("Translate");
@@ -107,7 +114,6 @@ public class UserPane extends VBox {
         menuUser.getItems().addAll(add);
         menuBar.getMenus().addAll(menuUser);
         menuBar.getStyleClass().add("plain-menuBar");
-        Text text = new Text("Hello, " + Settings.getLogin());
         HBox textBox = new HBox();
         textBox.setPadding(new Insets(0, 0, 0, 20));
         HBox.setHgrow(textBox, Priority.ALWAYS);
@@ -150,7 +156,7 @@ public class UserPane extends VBox {
         wordListButton.setSelected(false);
 
         container.getChildren().clear();
-        container.getChildren().add(MessagePane.getInstance(message));
+        container.getChildren().add(messagePane.update(message));
     }
 
     public void setContent(Parent content) {
@@ -158,50 +164,5 @@ public class UserPane extends VBox {
         container.getChildren().add(content);
         HBox.setHgrow(content, Priority.ALWAYS);
         App.getInstance().getPrimaryStage().sizeToScene();
-    }
-
-    public SignInScene getSignInScene() {
-        return signInScene;
-    }
-
-    @Autowired
-    public void setSignInScene(SignInScene signInScene) {
-        this.signInScene = signInScene;
-    }
-
-    public TranslationPane getTranslationPane() {
-        return translationPane;
-    }
-
-    @Autowired
-    public void setTranslationPane(TranslationPane translationPane) {
-        this.translationPane = translationPane;
-    }
-
-    public AddNewWordPane getAddNewWordPane() {
-        return addNewWordPane;
-    }
-
-    @Autowired
-    public void setAddNewWordPane(AddNewWordPane addNewWordPane) {
-        this.addNewWordPane = addNewWordPane;
-    }
-
-    public WordListPane getWordListPane() {
-        return wordListPane;
-    }
-
-    @Autowired
-    public void setWordListPane(WordListPane wordListPane) {
-        this.wordListPane = wordListPane;
-    }
-
-    public EditPane getEditPane() {
-        return editPane;
-    }
-
-    @Autowired
-    public void setEditPane(EditPane editPane) {
-        this.editPane = editPane;
     }
 }

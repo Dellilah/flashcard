@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
+
 /**
  * User: ghaxx
  * Date: 26/04/2013
@@ -15,9 +18,20 @@ import org.springframework.stereotype.Component;
 public class SignInScene extends Scene {
 
     @Autowired
-    private SignInPane signInPane = null;
+    private SignInPane signInPane;
+
+    @Autowired
+    private Logger logger;
 
     public SignInScene() {
-        super(App.getInstanceContext().getBean(SignInPane.class));
+        super(null);
     }
+
+    @PostConstruct
+    private void setup() {
+        setRoot(signInPane);
+        logger.info("Created SignInScene");
+    }
+
+
 }

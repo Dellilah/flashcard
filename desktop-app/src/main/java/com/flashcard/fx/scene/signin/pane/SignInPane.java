@@ -20,6 +20,9 @@ import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
+
 /**
  * Date: 26/04/2013
  * Time: 10:57
@@ -31,33 +34,39 @@ public class SignInPane extends GridPane {
     private final PasswordField passwordField;
     private final SignInPane.LoadingBar loadingBar;
 
-    //    @Autowired
+    @Autowired
     private UserScene userScene;
-    private UserPane userPane;
 
     @Autowired
     private Service service;
+    @Autowired
+    private Logger logger;
 
     public SignInPane() {
+        loadingBar = new LoadingBar();
+        emailTextField = new TextField(Settings.getLogin());
+        passwordField = new PasswordField();
+    }
+
+    @PostConstruct
+    private void setup() {
+
         setAlignment(Pos.CENTER);
         setHgap(10);
         setVgap(10);
         setPadding(new Insets(25, 25, 25, 25));
 
-        loadingBar = new LoadingBar();
 
         Text sceneTitle = new Text("Please sign in");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
         Label userName = new Label("Email:");
 
-        emailTextField = new TextField(Settings.getLogin());
         emailTextField.setOnAction(new SignInHandler(loadingBar));
         add(emailTextField, 1, 1);
 
         Label pw = new Label("Password:");
 
-        passwordField = new PasswordField();
         passwordField.setOnAction(new SignInHandler(loadingBar));
         passwordField.setText(Settings.getPassword());
 
@@ -74,6 +83,8 @@ public class SignInPane extends GridPane {
         add(passwordField, 1, 2);
         add(hbBtn, 0, 4, 2, 1);
         add(loadingBar, 0, 6, 2, 1);
+
+        logger.info("Created SignInPane");
     }
 
     private class SignInHandler implements EventHandler<ActionEvent> {
@@ -108,30 +119,13 @@ public class SignInPane extends GridPane {
                 @Override
                 protected void succeeded() {
 //                    userScene.setRoot(userPane);
+                    loadingBar.done("");
                     App.getInstance().setScene(userScene);
 //                    App.getInstance().setScene(App.getInstanceContext().getBean(UserScene.class));
                 }
 
             }).start();
         }
-    }
-
-    public UserScene getUserScene() {
-        return userScene;
-    }
-
-    @Autowired
-    public void setUserScene(UserScene userScene) {
-        this.userScene = userScene;
-    }
-
-    public UserPane getUserPane() {
-        return userPane;
-    }
-
-    @Autowired
-    public void setUserPane(UserPane userPane) {
-        this.userPane = userPane;
     }
 
     private class LoadingBar extends HBox {

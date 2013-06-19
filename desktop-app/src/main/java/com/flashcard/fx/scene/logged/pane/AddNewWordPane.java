@@ -49,6 +49,7 @@ public class AddNewWordPane extends GridPane{
     private final Button addButton = new Button("Add");
     @Autowired
     private Service service;
+    @Autowired
     private UserScene userScene;
     private String imageURL = "";
     private ImageSelect imageSelect;
@@ -141,14 +142,5 @@ public class AddNewWordPane extends GridPane{
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.fitToWidthProperty();
         add(scrollPane, 0, 8, 2, 1);
-    }
-
-    public UserScene getUserScene() {
-        return userScene;
-    }
-
-    @Autowired
-    public void setUserScene(UserScene userScene) {
-        this.userScene = userScene;
     }
 }

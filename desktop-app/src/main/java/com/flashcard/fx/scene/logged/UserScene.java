@@ -25,16 +25,17 @@ import javax.annotation.PostConstruct;
 @Lazy
 public class UserScene extends Scene {
 
+    @Autowired
     private UserPane userPane;
 
     public UserScene() {
-        super(new VBox());
-        getStylesheets().add("main.css");
+        super(null);
     }
 
     @PostConstruct
     public void setup() {
         setRoot(userPane);
+        getStylesheets().add("main.css");
     }
 
     public void showEditPane(Integer id) {
@@ -49,12 +50,4 @@ public class UserScene extends Scene {
         userPane.setMessagePane(s);
     }
 
-    public UserPane getUserPane() {
-        return userPane;
-    }
-
-    @Autowired
-    public void setUserPane(UserPane userPane) {
-        this.userPane = userPane;
-    }
 }

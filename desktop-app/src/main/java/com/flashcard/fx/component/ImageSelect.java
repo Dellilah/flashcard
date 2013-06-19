@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,10 +34,10 @@ public class ImageSelect extends FlowPane {
     private Map<String, ImageView> images = new HashMap<>();
 
     public ImageSelect() {
-        init();
     }
 
-    private void init() {
+    @PostConstruct
+    private void setup() {
         noImagesText = new Text("No Images");
         noImagesText.setTextAlignment(TextAlignment.CENTER);
         getChildren().add(noImagesText);

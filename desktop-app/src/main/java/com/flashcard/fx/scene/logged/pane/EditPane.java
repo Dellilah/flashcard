@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -43,8 +42,10 @@ public class EditPane extends GridPane {
 
     @Autowired
     private Service service;
+    @Autowired
     private UserScene userScene;
     private WordDTO word;
+    @Autowired
     private ImageSelect imageSelect;
 
     public EditPane() {
@@ -59,12 +60,12 @@ public class EditPane extends GridPane {
         englishWordField = new TextField();
         editButton = new Button("Edit");
 
-        init();
+        setup();
         setWordId(id_);
     }
 
     @PostConstruct
-    private void init() {
+    private void setup() {
         setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);
         setPadding(new Insets(25, 25, 25, 25));
@@ -106,7 +107,6 @@ public class EditPane extends GridPane {
             }
         });
 
-        imageSelect = new ImageSelect();
         imageSelect.setMaxSize(300, 300);
 
         Button searchForImage = new Button("Search for image");
@@ -164,14 +164,5 @@ public class EditPane extends GridPane {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public UserScene getUserScene() {
-        return userScene;
-    }
-
-    @Autowired
-    public void setUserScene(UserScene userScene) {
-        this.userScene = userScene;
     }
 }

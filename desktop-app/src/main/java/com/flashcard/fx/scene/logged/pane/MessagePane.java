@@ -2,11 +2,13 @@ package com.flashcard.fx.scene.logged.pane;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,8 +18,8 @@ import org.springframework.stereotype.Component;
  * Time: 22:50
  */
 @Component
+@Lazy
 public class MessagePane extends GridPane {
-    private static MessagePane instance;
     private Text message;
 
     public MessagePane() {
@@ -46,10 +48,8 @@ public class MessagePane extends GridPane {
         message.setText(mess);
     }
 
-    public static MessagePane getInstance(String mess) {
-        if (instance == null)
-            instance = new MessagePane(mess);
-        return instance;
+    public MessagePane update(String message) {
+        setMessage(message);
+        return this;
     }
-
 }

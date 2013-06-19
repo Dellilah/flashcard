@@ -35,6 +35,7 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class WordListPane extends VBox implements Refreshable {
+    @Autowired
     WordsTable wordList;
 
     public WordListPane() {
@@ -55,12 +56,4 @@ public class WordListPane extends VBox implements Refreshable {
         wordList.refresh();
     }
 
-    public WordsTable getWordList() {
-        return wordList;
-    }
-
-    @Autowired
-    public void setWordList(WordsTable wordList) {
-        this.wordList = wordList;
-    }
 }

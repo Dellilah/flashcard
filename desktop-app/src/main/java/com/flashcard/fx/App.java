@@ -6,12 +6,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.logging.Logger;
+
 /**
  * Date: 26/04/2013
  * Time: 00:27
  */
 public class App extends Application {
     private static App instance = null;
+
+    private Logger logger;
 
     private Stage primaryStage = null;
     private AnnotationConfigApplicationContext context = null;
