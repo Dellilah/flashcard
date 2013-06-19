@@ -30,9 +30,11 @@ import org.springframework.stereotype.Component;
 
 import org.apache.http.client.fluent.Request;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,15 +53,15 @@ public class AddNewWordPane extends GridPane{
     private Service service;
     @Autowired
     private UserScene userScene;
+    @Autowired
+    private Logger logger;
     private String imageURL = "";
     private ImageSelect imageSelect;
 
     public AddNewWordPane(){
-        init();
     }
 
     public AddNewWordPane(String wordPolish, String wordEnglish){
-        init();
         presetWords(wordPolish, wordEnglish);
     }
 
@@ -68,7 +70,8 @@ public class AddNewWordPane extends GridPane{
         polishWordField.setText(wordPolish);
     }
 
-    public void init(){
+    @PostConstruct
+    public void setup(){
         setAlignment(Pos.CENTER);
         setHgap(10);
         setVgap(10);
@@ -142,5 +145,6 @@ public class AddNewWordPane extends GridPane{
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.fitToWidthProperty();
         add(scrollPane, 0, 8, 2, 1);
+        logger.info("Created AddNewWordPane");
     }
 }

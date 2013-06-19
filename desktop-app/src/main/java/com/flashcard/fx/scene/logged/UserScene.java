@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
 
 /**
  * User: ghaxx
@@ -27,6 +28,8 @@ public class UserScene extends Scene {
 
     @Autowired
     private UserPane userPane;
+    @Autowired
+    private Logger logger;
 
     public UserScene() {
         super(null);
@@ -36,6 +39,7 @@ public class UserScene extends Scene {
     public void setup() {
         setRoot(userPane);
         getStylesheets().add("main.css");
+        logger.info("Created UserScene");
     }
 
     public void showEditPane(Integer id) {

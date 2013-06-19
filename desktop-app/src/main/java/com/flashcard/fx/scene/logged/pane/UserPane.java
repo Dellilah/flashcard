@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
 
 /**
  * User: ghaxx
@@ -44,6 +45,8 @@ public class UserPane extends VBox {
     private WordListPane wordListPane;
     @Autowired
     private EditPane editPane;
+    @Autowired
+    private Logger logger;
 
     @Autowired
     private MessagePane messagePane;
@@ -137,6 +140,7 @@ public class UserPane extends VBox {
         getChildren().add(container);
 
         container.getChildren().add(App.getInstanceContext().getBean(TranslationPane.class));
+        logger.info("Created UserPane");
     }
 
     public void setEditPane(Integer id){

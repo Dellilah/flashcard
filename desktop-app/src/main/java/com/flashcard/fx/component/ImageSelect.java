@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.apache.http.client.fluent.Request;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Date: 13/06/13
@@ -32,6 +34,8 @@ public class ImageSelect extends FlowPane {
     private String selected;
     private Text noImagesText;
     private Map<String, ImageView> images = new HashMap<>();
+    @Autowired
+    private Logger logger;
 
     public ImageSelect() {
     }
@@ -41,6 +45,7 @@ public class ImageSelect extends FlowPane {
         noImagesText = new Text("No Images");
         noImagesText.setTextAlignment(TextAlignment.CENTER);
         getChildren().add(noImagesText);
+        logger.info("Created ImageSelect");
     }
 
     public void addByURI(final String image) {
@@ -85,6 +90,7 @@ public class ImageSelect extends FlowPane {
                 box.getStyleClass().setAll("image-selection-box");
                 box.getChildren().clear();
                 box.getChildren().add(imageView);
+                logger.info("Added image " + image);
             }
 
             @Override

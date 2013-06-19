@@ -8,8 +8,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,16 +25,17 @@ import org.springframework.stereotype.Component;
 @Lazy
 public class MessagePane extends GridPane {
     private Text message;
+    @Autowired
+    private Logger logger;
 
     public MessagePane() {
-        init();
     }
 
     public MessagePane(String mess){
-        init();
         setMessage(mess);
     }
 
+    @PostConstruct
     private void init() {
         setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);
@@ -42,6 +47,7 @@ public class MessagePane extends GridPane {
         message.setFill(Color.RED);
         message.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         add(message, 0, 0, 2, 1);
+        logger.info("Created MessagePane");
     }
 
     private void setMessage(String mess) {

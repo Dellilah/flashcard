@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -37,6 +38,8 @@ import javax.annotation.PostConstruct;
 public class WordListPane extends VBox implements Refreshable {
     @Autowired
     WordsTable wordList;
+    @Autowired
+    private Logger logger;
 
     public WordListPane() {
         setAlignment(Pos.CENTER);
@@ -45,10 +48,11 @@ public class WordListPane extends VBox implements Refreshable {
     }
 
     @PostConstruct
-    private void init() {
+    private void setup() {
         wordList.setMaxWidth(Double.MAX_VALUE);
         wordList.setMinWidth(850);
         getChildren().add(wordList);
+        logger.info("Created WordListPane");
     }
 
     @Override

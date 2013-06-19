@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Date: 11/06/13
@@ -36,6 +37,8 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
     private Service service;
     @Autowired
     private UserScene userScene;
+    @Autowired
+    private Logger logger;
 
     public WordsTable() {
 
@@ -139,6 +142,7 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
         updateDate.setCellValueFactory((new PropertyValueFactory<WordDTO, String>("updated_at")));
 
         getColumns().addAll(action, image, polishWord, englishWord, createDate, updateDate);
+        logger.info("Created WordsTable");
     }
 
     public void refresh() {
@@ -147,6 +151,7 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
 
             @Override
             protected Void call() throws Exception {
+                logger.info("Fetching words from server");
                 try {
                     List<WordDTO> dataList = service.wordsIndex();
                     tableData = FXCollections.observableArrayList(dataList);
@@ -158,6 +163,7 @@ public class WordsTable extends TableView<WordDTO> implements Refreshable {
 
             @Override
             protected void succeeded() {
+                logger.info("Loading new words list");
                 setItems(tableData);
             }
         }).start();

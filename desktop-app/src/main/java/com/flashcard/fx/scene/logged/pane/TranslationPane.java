@@ -26,7 +26,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Date: 26/04/2013
@@ -40,8 +42,16 @@ public class TranslationPane extends GridPane implements Refreshable {
 
     @Autowired
     private Service service;
+    @Autowired
+    private Logger logger;
 
     private TranslationPane() {
+        wordTextField = new TextField();
+        resultsBox = new VBox(10);
+    }
+
+    @PostConstruct
+    private void setup() {
         setAlignment(Pos.CENTER);
         setHgap(10);
         setVgap(10);
@@ -54,7 +64,6 @@ public class TranslationPane extends GridPane implements Refreshable {
         add(sceneTitle, 0, 0, 2, 1);
 
 
-        wordTextField = new TextField();
         wordTextField.setMaxWidth(Double.MAX_VALUE);
         add(wordTextField, 0, 1, 2, 1);
 
@@ -72,7 +81,6 @@ public class TranslationPane extends GridPane implements Refreshable {
         resultsTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
         add(resultsTitle, 0, 3, 2, 1);
 
-        resultsBox = new VBox(10);
         resultsBox.setPadding(new Insets(5));
         ScrollPane pane = new ScrollPane();
         pane.setContent(resultsBox);
@@ -88,6 +96,7 @@ public class TranslationPane extends GridPane implements Refreshable {
                 resultsBox.getChildren().removeAll(resultsBox.getChildren());
             }
         });
+        logger.info("Created TranslationPane");
     }
 
     @Override

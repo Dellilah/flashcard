@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,6 +48,8 @@ public class EditPane extends GridPane {
     private WordDTO word;
     @Autowired
     private ImageSelect imageSelect;
+    @Autowired
+    private Logger logger;
 
     public EditPane() {
         polishWordField = new TextField();
@@ -140,6 +143,7 @@ public class EditPane extends GridPane {
         add(englishTitle, 0, 4, 2, 1);
         add(englishWordField, 0, 5, 2, 1);
         add(imageSelect, 0, 6, 2, 1);
+        logger.info("Created EditPane");
     }
 
     public Integer getWordId() {
