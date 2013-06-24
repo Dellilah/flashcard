@@ -4,6 +4,8 @@ import com.flashcard.fx.App;
 import com.flashcard.fx.scene.signin.pane.SignInPane;
 import javafx.scene.Scene;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +17,7 @@ import java.util.logging.Logger;
  * Time: 00:51
  */
 @Component
+@Lazy
 public class SignInScene extends Scene {
 
     @Autowired

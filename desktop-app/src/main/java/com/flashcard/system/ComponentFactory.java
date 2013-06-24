@@ -4,6 +4,7 @@ import com.flashcard.fx.scene.logged.UserScene;
 import com.flashcard.fx.scene.logged.pane.UserPane;
 import javafx.scene.Parent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,8 @@ import java.util.logging.Logger;
 public class ComponentFactory {
 
     @Bean
-    public Logger buildLogger() {
-        return Logger.getLogger("APP");
+    @Value("APP")
+    public Logger buildLogger(String name) {
+        return Logger.getLogger(name);
     }
 }

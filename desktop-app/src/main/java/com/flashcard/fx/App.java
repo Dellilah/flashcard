@@ -46,11 +46,13 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         instance = this;
+        logger = getContext().getBean(Logger.class);
+        logger.info("Starting application");
+
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Welcome to Flashcard");
 
-        SignInScene scene = getContext().getBean(SignInScene.class);
-        setScene(scene);
+        setScene(getContext().getBean(SignInScene.class));
         getPrimaryStage().sizeToScene();
 
         primaryStage.show();
@@ -59,12 +61,6 @@ public class App extends Application {
     public AnnotationConfigApplicationContext getContext() {
         if (context == null) {
             context = new AnnotationConfigApplicationContext();
-//            context.register(
-//                    com.flashcard.system.Service.class,
-//                    com.flashcard.fx.scene.logged.UserScene.class,
-//                    com.flashcard.fx.scene.signin.SignInScene.class,
-//                    com.flashcard.fx.scene.signin.pane.SignInPane.class
-//            );
             context.scan("com.flashcard");
             context.refresh();
         }

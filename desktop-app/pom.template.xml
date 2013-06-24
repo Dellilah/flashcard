@@ -33,7 +33,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.flashcard.App</mainClass>
+                            <mainClass>com.flashcard.fx.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -47,39 +47,51 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>compile</phase>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <phase>test-compile</phase>
-                    </execution>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <launchers>
-                        <launcher>
-                            <id>fc</id>
-                            <mainClass>com.flashcard.FlashcardApp$</mainClass>
-                        </launcher>
-                    </launchers>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.flashcard.fx.App</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.scala-tools</groupId>-->
+                <!--<artifactId>maven-scala-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>compile</id>-->
+                        <!--<goals>-->
+                            <!--<goal>compile</goal>-->
+                        <!--</goals>-->
+                        <!--<phase>compile</phase>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                        <!--<id>test-compile</id>-->
+                        <!--<goals>-->
+                            <!--<goal>testCompile</goal>-->
+                        <!--</goals>-->
+                        <!--<phase>test-compile</phase>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                        <!--<phase>process-resources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>compile</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<launchers>-->
+                        <!--<launcher>-->
+                            <!--<id>fc</id>-->
+                            <!--<mainClass>com.flashcard.FlashcardApp$</mainClass>-->
+                        <!--</launcher>-->
+                    <!--</launchers>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -102,6 +114,7 @@
                 <executions>
                     <execution>
                         <id>copy-web-resources</id>
+                        <!-- here the phase you need -->
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -128,8 +141,8 @@
             <version>2.10.1</version>
         </dependency>
         <dependency>
-            <groupId>javafx</groupId>
-            <artifactId>jfxrt</artifactId>
+            <groupId>com.oracle</groupId>
+            <artifactId>javafx-runtime</artifactId>
             <version>${javafx.version}</version>
             <scope>system</scope>
             <systemPath>${javafx.runtime.lib.jar}</systemPath>
